@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Incident Response Training | IR-2 | IL5 / FedRAMP High</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0e14;--surface:#111722;--surface2:#1a2233;--border:#1f2d47;
+  --accent:#00d4ff;--accent2:#ff6b35;--green:#00ff9f;--red:#ff4757;
+  --yellow:#ffd32a;--text:#c8d8f0;--dim:#5a7aa0;
+  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+header{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:14px 16px;position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;
+}
+.badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.badge{font-family:var(--mono);font-size:9px;letter-spacing:.1em;padding:3px 7px;border:1px solid}
+.badge-blue{color:var(--accent);border-color:var(--accent)}
+.badge-yellow{color:var(--yellow);border-color:var(--yellow)}
+.badge-red{color:var(--red);border-color:var(--red)}
+.hdr-title{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.prog-wrap{display:flex;align-items:center;gap:8px}
+.prog-label{font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap}
+.prog-outer{width:80px;height:3px;background:var(--border)}
+.prog-inner{height:100%;background:var(--accent);box-shadow:0 0 6px var(--accent);transition:width .4s}
+.main{max-width:700px;margin:0 auto;padding:28px 16px 80px}
+.sec-num{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;margin-bottom:6px}
+.sec-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.2}
+.sec-desc{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:24px}
+.card{background:var(--surface);border:1px solid var(--border);padding:20px 20px 20px 24px;margin-bottom:14px;position:relative}
+.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent)}
+.card.warn::before{background:var(--yellow)}
+.card.danger::before{background:var(--red)}
+.card.ok::before{background:var(--green)}
+.card-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.card.warn .card-lbl{color:var(--yellow)}.card.danger .card-lbl{color:var(--red)}.card.ok .card-lbl{color:var(--green)}
+.card h3{font-size:14px;font-weight:600;color:#fff;margin-bottom:8px}
+.card p,.card li{font-size:13px;color:var(--text);line-height:1.65}
+.card ul{list-style:none;padding:0}
+.card ul li{padding:4px 0 4px 14px;position:relative}
+.card ul li::before{content:'>';position:absolute;left:0;color:var(--accent);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+th{text-align:left;font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--dim);padding:6px 10px;border-bottom:1px solid var(--border);text-transform:uppercase}
+td{padding:8px 10px;border-bottom:1px solid rgba(31,45,71,.5);color:var(--text);vertical-align:top;font-size:12px}
+tr:last-child td{border:none}
+.tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 5px;letter-spacing:.04em}
+.t-blue{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.3)}
+.t-red{background:rgba(255,71,87,.1);color:var(--red);border:1px solid rgba(255,71,87,.3)}
+.t-yel{background:rgba(255,211,42,.1);color:var(--yellow);border:1px solid rgba(255,211,42,.3)}
+.t-grn{background:rgba(0,255,159,.1);color:var(--green);border:1px solid rgba(0,255,159,.3)}
+.quiz-box{background:var(--surface);border:1px solid var(--border);padding:24px 20px;position:relative}
+.quiz-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.q-counter{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:12px}
+.q-text{font-size:15px;font-weight:600;color:#fff;line-height:1.5;margin-bottom:20px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;cursor:pointer;display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text);text-align:left;width:100%;transition:border-color .15s}
+.opt:hover{border-color:var(--accent);color:#fff}
+.opt.correct{border-color:var(--green);background:rgba(0,255,159,.05);color:var(--green)}
+.opt.wrong{border-color:var(--red);background:rgba(255,71,87,.05);color:var(--red)}
+.opt.off{cursor:default;pointer-events:none}
+.opt-letter{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);min-width:16px;padding-top:1px}
+.opt.correct .opt-letter{color:var(--green)}.opt.wrong .opt-letter{color:var(--red)}
+.feedback{margin-top:16px;padding:13px 14px;border-left:3px solid var(--green);font-size:13px;color:var(--text);line-height:1.6;display:none}
+.feedback.show{display:block}.feedback.bad{border-color:var(--red)}
+.feedback strong{color:#fff}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:28px}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border)}
+.dot.active{background:var(--accent);box-shadow:0 0 5px var(--accent)}
+.dot.done{background:var(--green)}
+.btn{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:10px 20px;border:1px solid;cursor:pointer;background:transparent;transition:all .15s}
+.btn-p{border-color:var(--accent);color:var(--accent)}
+.btn-p:hover{background:var(--accent);color:var(--bg)}
+.btn-p:disabled{opacity:.3;cursor:default;pointer-events:none}
+.btn-g{border-color:var(--border);color:var(--dim)}
+.btn-g:hover{border-color:var(--dim);color:var(--text)}
+.done-wrap{text-align:center;padding:48px 0}
+.done-icon{font-size:44px;margin-bottom:16px}
+.done-wrap h2{font-size:24px;font-weight:700;color:#fff;margin-bottom:8px}
+.done-wrap p{font-size:13px;color:var(--dim);max-width:460px;margin:0 auto 24px;line-height:1.6}
+.score{font-family:var(--mono);font-size:44px;font-weight:600;text-shadow:0 0 24px rgba(0,255,159,.4);margin:16px 0 4px}
+.score.pass{color:var(--green)}.score.fail{color:var(--red)}
+.cert{border:1px solid var(--border);background:var(--surface);padding:20px 24px;display:inline-block;text-align:left;margin-top:20px;max-width:440px;width:100%}
+.cert-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--accent);margin-bottom:12px;text-transform:uppercase}
+.cert-row{font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:4px}
+.cert-row span{color:var(--text)}
+.reg-box{background:var(--surface);border:1px solid var(--border);padding:32px 28px;max-width:420px;margin:0 auto}
+.reg-box label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+.reg-box input{width:100%;background:var(--surface2);border:1px solid var(--border);color:#fff;font-family:var(--sans);font-size:14px;padding:10px 12px;margin-bottom:20px;outline:none;transition:border-color .15s}
+.reg-box input:focus{border-color:var(--accent)}
+.reg-box input[readonly]{color:var(--dim);cursor:default}
+</style>
+</head>
+<body>
+<header>
+  <div class="badges">
+    <div class="badge badge-blue">IL5 / FEDRAMP HIGH</div>
+    <div class="badge badge-red">IR-2</div>
+    <div class="badge badge-yellow">FOR OFFICIAL USE ONLY</div>
+    <div class="hdr-title">Incident Response Training</div>
+  </div>
+  <div class="prog-wrap">
+    <span class="prog-label" id="plbl">0/21</span>
+    <div class="prog-outer"><div class="prog-inner" id="pbar" style="width:0%"></div></div>
+  </div>
+</header>
+
+<div class="main" id="root"></div>
+
+<script>
+var step=0, answers={}, correct=0, userName='';
+
+var steps=[
+  {type:'reg'},
+  {type:'c',id:'overview'},
+  {type:'c',id:'lifecycle'},
+  {type:'c',id:'detection'},
+  {type:'c',id:'reporting'},
+  {type:'c',id:'response'},
+  {type:'c',id:'comms'},
+  {type:'q',id:0},{type:'q',id:1},{type:'q',id:2},{type:'q',id:3},{type:'q',id:4},
+  {type:'q',id:5},{type:'q',id:6},{type:'q',id:7},{type:'q',id:8},{type:'q',id:9},
+  {type:'q',id:10},{type:'q',id:11},{type:'q',id:12},{type:'q',id:13},
+  {type:'done'}
+];
+
+var qs=[
+  {q:'According to NIST SP 800-61, what are the four phases of the Incident Response Lifecycle in the correct order?',
+   opts:['Identification, Containment, Eradication, Recovery','Preparation; Detection & Analysis; Containment, Eradication & Recovery; Post-Incident Activity','Detection, Reporting, Remediation, Documentation','Triage, Escalation, Response, Closure'],ans:1,
+   fb:'<strong>Correct.</strong> NIST SP 800-61 defines four phases: Preparation, Detection & Analysis, Containment/Eradication/Recovery, and Post-Incident Activity. The feedback loop from post-incident activity improves future preparation.'},
+  {q:'A SEV-1 (Critical) incident such as active ransomware is discovered on a production system at 2:00 AM. When must the ISSO/ISSM be notified?',
+   opts:['At the start of the next business day when leadership is available','Within 4 hours -- overnight incidents have an extended notification window','Immediately -- SEV-1 incidents require immediate notification regardless of time of day','Within 1 hour -- allow the SOC analyst time to confirm and document first'],ans:2,
+   fb:'<strong>Correct.</strong> SEV-1 incidents require immediate notification regardless of the time of day. Ransomware is always SEV-1. Delayed notification at this severity level directly enables greater damage and may violate regulatory timelines.'},
+  {q:'Under CIRCIA (Cyber Incident Reporting for Critical Infrastructure Act), within how many hours must a significant cyber incident be reported to CISA?',
+   opts:['24 hours','48 hours','72 hours','7 days'],ans:2,
+   fb:'<strong>Correct.</strong> CIRCIA requires reporting of significant cyber incidents to CISA within 72 hours. Ransomware payments specifically require reporting within 24 hours. These are separate from internal reporting requirements.'},
+  {q:'During incident response, a SOC analyst discovers that an attacker may have accessed a database containing PII. What is the FIRST action the analyst should take?',
+   opts:['Immediately shut down the database server to prevent further data access','Notify the Incident Commander and ISSO/ISSM -- this triggers escalation and reporting obligations','Delete the attacker\'s access account to cut off their connection','Wipe and rebuild the database server from a recent backup'],ans:1,
+   fb:'<strong>Correct.</strong> Suspected PII access is a mandatory escalation trigger. The analyst must notify the IC and ISSO/ISSM immediately before taking any technical action. Shutting down or wiping systems before authorization could destroy forensic evidence.'},
+  {q:'Which of the following is a mandatory escalation trigger that requires immediate notification of the Incident Commander regardless of severity assessment?',
+   opts:['A single failed login attempt on a non-privileged user account','A routine vulnerability scan that identifies an unpatched system','Any detection of ransomware on any system in the environment','A user reporting that their workstation is running slowly'],ans:2,
+   fb:'<strong>Correct.</strong> Ransomware is always a mandatory immediate escalation trigger. There is no "small" ransomware incident. A single encrypted file on an endpoint can become an enterprise-wide event within minutes. Escalate first, assess scope second.'},
+  {q:'What is the primary purpose of preserving forensic evidence BEFORE taking containment actions on a compromised system?',
+   opts:['To comply with a documentation requirement that can be completed after recovery','To maintain a legal chain of custody and preserve volatile data that would be lost on system shutdown or reimaging','To allow the attacker to remain active while the investigation completes','To give the security team more time before notifying leadership'],ans:1,
+   fb:'<strong>Correct.</strong> Volatile data -- memory contents, active network connections, running processes -- is lost when a system is powered off or reimaged. Forensic preservation before containment captures this critical evidence. Chain of custody documentation is required for any legal proceedings.'},
+  {q:'A SOC analyst confirms a true positive intrusion (SEV-2) and contacts the Incident Commander. The IC determines a reportable incident has occurred. Who should the IC notify next?',
+   opts:['The attacker\'s likely country of origin via diplomatic channels','The ISSO/ISSM for regulatory reporting obligations and response authorization','The help desk to submit a service ticket for system repair','The vendor of the affected software to request an emergency patch'],ans:1,
+   fb:'<strong>Correct.</strong> The ISSO/ISSM is the next escalation point from the IC for a confirmed SEV-2 incident. They are responsible for regulatory reporting obligations, authorizing response decisions, and briefing leadership.'},
+  {q:'Which communication practice is REQUIRED during an active incident response?',
+   opts:['Share full incident details with all staff via company email to ensure everyone stays informed','Post regular status updates to the organization\'s public social media channels for transparency','Use out-of-band communication channels and apply strict need-to-know to all incident information','Allow the attacker to continue operating while the communications plan is developed'],ans:2,
+   fb:'<strong>Correct.</strong> If the attacker has compromised email or messaging systems, they may be reading your response plans in real time. Out-of-band channels (encrypted messaging, phone bridges) and strict need-to-know prevent this. Social media and broad email distribution of incident details are prohibited.'},
+  {q:'Which source provides free, pre-built tabletop exercise packages designed specifically for IR teams covering ransomware and data breach scenarios?',
+   opts:['National Security Agency (NSA) classified training portal -- requires clearance','CISA at cisa.gov/cybersecurity-training-exercises -- free packages available to all organizations','Gartner Magic Quadrant for Incident Response -- available to paying subscribers only','Your organization\'s HR department training catalog'],ans:1,
+   fb:'<strong>Correct.</strong> CISA provides free Tabletop Exercise Packages (CTEPs) at cisa.gov/cybersecurity-training-exercises covering ransomware, data breach, insider threat, and supply chain scenarios. Available to all organizations and customizable without cost.'},
+  {q:'During recovery, an administrator wants to restore a compromised web server from a backup taken 6 hours before the incident was discovered. Why is this potentially dangerous?',
+   opts:['Backups are always safe to restore from -- they are created by trusted automated systems','The backup may have been created after the initial compromise, meaning it could contain attacker-planted backdoors or malware','Restoring from backup is prohibited under NIST SP 800-61 -- all systems must be rebuilt from scratch','The backup may be too old to contain current application data'],ans:1,
+   fb:'<strong>Correct.</strong> If the attacker gained access before the backup was taken, the backup itself may contain malware, backdoors, or web shells. The compromise window must be established first -- only backups confirmed to pre-date the initial compromise should be used.'},
+  {q:'After a contained incident, the IR team lead wants to skip the after-action review (AAR) because the team is exhausted and the incident is resolved. What should the ISSO/ISSM communicate?',
+   opts:['The AAR is optional -- if the team is satisfied the incident is closed, skip it','The AAR should be delayed indefinitely until the team is fully rested','The AAR is a required deliverable under NIST 800-61 and most regulatory frameworks -- it must be conducted within approximately 2 weeks and produce documented findings','The AAR only applies to SEV-1 incidents -- lower severity incidents do not require after-action review'],ans:2,
+   fb:'<strong>Correct.</strong> Post-incident activity including the AAR is required by NIST SP 800-61 and most regulatory frameworks. It must be conducted while details are still fresh (within ~2 weeks) and produce a documented lessons learned report and corrective action plan.'},
+  {q:'A covered entity discovers they paid a ransomware demand. Under CIRCIA, within how many hours must this ransom payment be reported to CISA, separate from the incident report?',
+   opts:['72 hours -- same timeline as the incident itself','24 hours -- ransom payments have a shorter separate reporting timeline under CIRCIA','30 days -- payment reports are included in the final incident report','Ransom payments do not require separate reporting to CISA'],ans:1,
+   fb:'<strong>Correct.</strong> CIRCIA establishes a separate 24-hour reporting timeline specifically for ransomware payments -- shorter than the 72-hour incident reporting window. This helps CISA understand ransom payment trends and the overall ransomware threat landscape.'},
+  {q:'An Incident Commander is responding to a confirmed SEV-2 intrusion. Which action requires explicit ISSO/ISSM authorization BEFORE it is executed?',
+   opts:['Capturing a memory dump from the suspected compromised endpoint','Reviewing SIEM logs to identify attacker activity','Taking a mission-critical production system fully offline to prevent lateral movement','Notifying the SOC team members about the active incident'],ans:2,
+   fb:'<strong>Correct.</strong> Taking mission-critical production systems offline has direct operational impact and requires IC and ISSO/ISSM authorization. Evidence collection, log review, and team notifications are within the analyst\'s authority. Actions that could cause business disruption require authorization first.'},
+  {q:'Which of the following BEST describes "dwell time" in the context of incident response, and why is it a critical IR metric?',
+   opts:['The time an IR team member spends in the incident command center -- longer dwell time means more dedicated resources','The time between a vulnerability being published and a patch being released -- tracked to prioritize patching','The time between initial compromise and detection -- shorter dwell time means faster detection, less damage, and lower breach costs','The time between incident containment and full system recovery -- tracked as Mean Time to Recover (MTTR)'],ans:2,
+   fb:'<strong>Correct.</strong> Dwell time measures how long an attacker operated undetected after initial compromise. The industry average is 21 days (Mandiant 2023). Reducing dwell time is one of the highest-value IR improvements because every hour of undetected compromise enables additional damage, data exfiltration, and lateral movement.'}
+];
+
+function dots(){
+  var vis=steps.filter(function(s){return s.type!=='done'&&s.type!=='reg';});
+  return vis.map(function(s,i){
+    var idx=steps.indexOf(s);
+    var c='dot';
+    if(idx<step) c+=' done';
+    else if(idx===step) c+=' active';
+    return '<div class="'+c+'"></div>';
+  }).join('');
+}
+function nextStep(){if(step<steps.length-1){step++;render();window.scrollTo(0,0);}}
+function updateProg(){
+  var total=steps.filter(function(s){return s.type!=='done'&&s.type!=='reg';}).length;
+  var cur=Math.max(0,step-1);
+  var pct=Math.round((cur/total)*100);
+  document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('plbl').textContent=cur+'/'+total;
+}
+function answerQ(qi,chosen){
+  if(answers[qi]!==undefined) return;
+  answers[qi]=chosen;
+  if(chosen===qs[qi].ans) correct++;
+  render();
+}
+function card(type,label,heading,bodyOrItems){
+  var cls='card'+(type==='warn'?' warn':type==='danger'?' danger':type==='ok'?' ok':'');
+  var body='';
+  if(typeof bodyOrItems==='string') body='<p>'+bodyOrItems+'</p>';
+  else body='<ul>'+bodyOrItems.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>';
+  return '<div class="'+cls+'"><div class="card-lbl">'+label+'</div><h3>'+heading+'</h3>'+body+'</div>';
+}
+
+function renderReg(){
+  var now=new Date();
+  var ds=now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var html='<div class="sec-num">REGISTRATION</div>';
+  html+='<div class="sec-title">Incident Response Training (IR-2)</div>';
+  html+='<div class="sec-desc">CISA &amp; NIST SP 800-61 Aligned | Estimated Duration: 45 Minutes | 80% passing score required</div>';
+  html+='<div class="reg-box">';
+  html+='<label>Full Name (as it will appear on your completion record)</label>';
+  html+='<input type="text" id="regName" placeholder="e.g. Jane Doe" value="'+userName+'" autocomplete="name"/>';
+  html+='<label>Date</label>';
+  html+='<input type="text" value="'+ds+'" readonly/>';
+  html+='<button class="btn btn-p" style="width:100%" onclick="startTraining()">Begin Training --></button>';
+  html+='</div>';
+  return html;
+}
+
+function startTraining(){
+  var n=document.getElementById('regName').value.trim();
+  if(!n){document.getElementById('regName').style.borderColor='var(--red)';return;}
+  userName=n;
+  nextStep();
+}
+
+function renderContent(id){
+  var html='';
+  if(id==='overview'){
+    html+='<div class="sec-num">01 -- OVERVIEW &amp; DEFINITIONS</div>';
+    html+='<div class="sec-title">What Is Incident Response?</div>';
+    html+='<div class="sec-desc">A cybersecurity incident is any actual or suspected adverse event that threatens the confidentiality, integrity, or availability of information or information systems.</div>';
+    html+=card('','Who This Training Is For','Mandatory Personnel',[
+      'Incident Response Team Members -- coordinate and execute technical response',
+      'Security Operations (SOC) Personnel -- monitor alerts, triage events, first responders',
+      'System & Network Administrators -- provide system access, logs, and execute containment actions',
+      'ISSOs / ISSMs -- oversee compliance, authorize response actions, manage reporting obligations'
+    ]);
+    html+=card('warn','Key Definitions','Know the Terminology',[
+      '<strong>Event:</strong> Any observable occurrence in a network or system -- not all events are incidents',
+      '<strong>Incident:</strong> An event that actually or potentially threatens system/data security',
+      '<strong>Breach:</strong> A confirmed incident where unauthorized access to sensitive data has occurred',
+      '<strong>Major Incident:</strong> An incident with significant operational impact requiring senior leadership notification',
+      '<strong>Dwell Time:</strong> Time between initial compromise and detection -- industry avg is 21 days (Mandiant 2023)'
+    ]);
+    html+=card('danger','Why IR Matters','The Cost of Being Unprepared',[
+      'Organizations without a tested IR plan take on average 277 days to identify and contain a breach (IBM 2023)',
+      'FISMA and federal requirements mandate a documented IR capability -- failure to report is itself a compliance violation',
+      'CISA must be notified of significant cyber incidents within 72 hours under CIRCIA',
+      'In IL5 environments, an uncontained incident can compromise CUI and Controlled Defense Information'
+    ]);
+  } else if(id==='lifecycle'){
+    html+='<div class="sec-num">02 -- IR LIFECYCLE &amp; ROLES</div>';
+    html+='<div class="sec-title">NIST SP 800-61 Rev. 2 Incident Response Lifecycle</div>';
+    html+='<div class="sec-desc">The four-phase lifecycle provides the foundation for all federal incident response activities. Each phase feeds back into the next.</div>';
+    html+=card('','Phase 1','Preparation',[
+      'Establish IR policy, plan, procedures, team, and tools',
+      'Train personnel and conduct tabletop exercises',
+      'Deploy detection capabilities (SIEM, EDR, network monitoring)'
+    ]);
+    html+=card('warn','Phase 2','Detection &amp; Analysis',[
+      'Monitor for indicators of compromise across all sources',
+      'Triage alerts, confirm true positives, characterize the incident',
+      'Assign severity level (SEV 1-4), open incident ticket, notify stakeholders'
+    ]);
+    html+=card('danger','Phase 3','Containment, Eradication &amp; Recovery',[
+      'Isolate affected systems; eliminate root cause and malicious artifacts',
+      'Restore from clean, verified backups; validate recovery',
+      'Preserve forensic evidence before any containment actions'
+    ]);
+    html+=card('ok','Phase 4','Post-Incident Activity',[
+      'Conduct lessons learned within 2 weeks of closure',
+      'Update IR plan, apply permanent fixes, notify authorities',
+      'Produce after-action report and corrective action plan'
+    ]);
+
+    html+='<div class="card" style="padding:0;overflow:auto"><table><thead><tr><th>Role</th><th>Responsibilities</th></tr></thead><tbody>';
+    html+='<tr><td style="color:#fff;font-weight:600;white-space:nowrap">Incident Commander</td><td>Leads overall response; makes final decisions on containment and escalation; authorizes emergency actions</td></tr>';
+    html+='<tr><td style="color:#fff;font-weight:600;white-space:nowrap">SOC Analyst</td><td>Detects and triages incidents; opens tickets; collects initial evidence; notifies IC</td></tr>';
+    html+='<tr><td style="color:#fff;font-weight:600;white-space:nowrap">Forensic Analyst</td><td>Deep-dive investigation and root cause analysis; preserves evidence; identifies attacker TTPs</td></tr>';
+    html+='<tr><td style="color:#fff;font-weight:600;white-space:nowrap">ISSO / ISSM</td><td>Ensures regulatory reporting; authorizes response decisions; briefs leadership and legal</td></tr>';
+    html+='<tr><td style="color:#fff;font-weight:600;white-space:nowrap">Comms Lead</td><td>Manages internal/external communications; controls information release; prepares notifications</td></tr>';
+    html+='<tr><td style="color:#fff;font-weight:600;white-space:nowrap">IT / Sys Admins</td><td>Execute containment actions; provide access and artifacts to analysts; restore systems</td></tr>';
+    html+='</tbody></table></div>';
+
+  } else if(id==='detection'){
+    html+='<div class="sec-num">03 -- DETECTION, ANALYSIS &amp; IOCs</div>';
+    html+='<div class="sec-title">Identifying and Confirming Incidents</div>';
+    html+='<div class="sec-desc">Detection quality determines response speed. The faster an incident is detected and confirmed, the less damage it causes.</div>';
+    html+=card('','Detection Sources','Where Incidents Are Found',[
+      'SIEM alerts -- correlated log events from across the enterprise',
+      'Endpoint Detection & Response (EDR) -- behavioral anomalies on endpoints',
+      'Network traffic analysis -- unusual flows, beaconing, data exfiltration',
+      'User reports -- employees reporting suspicious emails or system behavior',
+      'Threat intelligence feeds -- IOCs matched against network and log data',
+      'External notification -- CISA, FBI, ISAC, or third-party vendor alert'
+    ]);
+    html+=card('warn','Indicators of Compromise','Recognize These Artifacts',[
+      '<strong>Network:</strong> Unusual outbound connections, DNS to suspicious domains, C2 beaconing patterns, large off-hours data transfers',
+      '<strong>Host:</strong> New/modified services, unusual processes from temp paths, unexpected accounts, credential dumping tools',
+      '<strong>Log:</strong> Multiple failed auth followed by success, admin logins at unusual hours, audit log gaps, mass file access',
+      '<strong>Application:</strong> Phishing emails, web shell activity, unusual API key usage, suspicious OAuth authorizations'
+    ]);
+    html+=card('ok','Analysis Checklist','Confirm and Characterize',[
+      'Confirm the event is a true positive',
+      'Identify affected systems, users, and data',
+      'Determine attack vector and entry point',
+      'Assess current impact on operations',
+      'Identify attacker objectives and TTPs',
+      'Assign severity level (SEV 1-4)',
+      'Open incident ticket and assign Incident Commander'
+    ]);
+
+    html+='<div class="card" style="padding:0;overflow:auto"><table><thead><tr><th>Severity</th><th>Level</th><th>Description</th><th>Response SLA</th><th>Notify</th></tr></thead><tbody>';
+    html+='<tr><td><span class="tag t-red">CRITICAL</span></td><td>SEV-1</td><td>Active breach, ransomware, mission impact</td><td>Immediate</td><td>ISSO + Leadership + CISA</td></tr>';
+    html+='<tr><td><span class="tag t-red">HIGH</span></td><td>SEV-2</td><td>Confirmed intrusion, malware, data exposure</td><td>1 hour</td><td>ISSO + Leadership</td></tr>';
+    html+='<tr><td><span class="tag t-yel">MEDIUM</span></td><td>SEV-3</td><td>Suspicious activity under investigation</td><td>4 hours</td><td>ISSO / ISSM</td></tr>';
+    html+='<tr><td><span class="tag t-blue">LOW</span></td><td>SEV-4</td><td>Anomalous events, minor violations</td><td>24 hours</td><td>SOC Supervisor</td></tr>';
+    html+='</tbody></table></div>';
+
+  } else if(id==='reporting'){
+    html+='<div class="sec-num">04 -- REPORTING &amp; ESCALATION</div>';
+    html+='<div class="sec-title">Reporting Requirements &amp; Escalation Procedures</div>';
+    html+='<div class="sec-desc">Failure to report a cybersecurity incident within required timelines is itself a compliance violation. When in doubt -- report.</div>';
+    html+=card('danger','Mandatory Reporting Timelines','Clock Starts at Detection',[
+      '<strong>IMMEDIATELY:</strong> Notify ISSO/ISSM + IC for any SEV-1 (Critical) -- active breach, ransomware, system compromise',
+      '<strong>1 HOUR:</strong> SEV-2 (High) confirmed -- intrusion, malware, significant data exposure',
+      '<strong>4 HOURS:</strong> SEV-3 (Medium) -- suspicious activity under investigation',
+      '<strong>24 HOURS:</strong> SEV-4 (Low) -- anomalous events, minor policy violations',
+      '<strong>72 HOURS:</strong> Report significant cyber incidents to CISA via US-CERT (CIRCIA requirement)',
+      '<strong>24 HOURS:</strong> Ransomware payments reported to CISA separately under CIRCIA',
+      '<strong>30 DAYS:</strong> Complete incident report to regulatory bodies as applicable'
+    ]);
+    html+=card('warn','CIRCIA Obligations','When CISA Must Be Notified',[
+      'Unauthorized access to or disruption of critical infrastructure systems',
+      'Ransomware attack -- payment must be reported within 24 hours separately',
+      'Substantial loss of confidentiality, integrity, or availability of a covered system',
+      'Serious impact on safety and resiliency of operational systems',
+      'Report via US-CERT Portal (us-cert.cisa.gov/forms/report) or CISA Central: 1-888-282-0870'
+    ]);
+    html+=card('','Escalation Chain','When to Escalate',[
+      'SOC Analyst --> SOC Supervisor: true positive confirmed, severity unclear',
+      'SOC Supervisor --> Incident Commander: SEV-2 or higher confirmed',
+      'Incident Commander --> ISSO/ISSM: reportable incident, response authorization needed',
+      'ISSO/ISSM --> CISO/Leadership: SEV-1 or breach affecting mission/data',
+      'CISO/Leadership --> CISA/Law Enforcement: major incident or CIRCIA trigger'
+    ]);
+    html+=card('danger','Mandatory Escalation Triggers','Escalate Immediately If:',[
+      'Severity cannot be determined within 30 minutes',
+      'Any confirmed or suspected data exfiltration of PII, PHI, or classified data',
+      'Ransomware detected on any system -- regardless of scope',
+      'Evidence of lateral movement beyond the initially identified system',
+      'Incident involves critical infrastructure, ICS/SCADA, or safety systems',
+      'Suspected nation-state or APT actor activity',
+      'Media inquiry, external report, or third-party discovery'
+    ]);
+
+  } else if(id==='response'){
+    html+='<div class="sec-num">05 -- CONTAINMENT, ERADICATION &amp; RECOVERY</div>';
+    html+='<div class="sec-title">Responding to and Recovering from Incidents</div>';
+    html+='<div class="sec-desc">Containment limits scope and damage. Eradication removes the threat. Recovery restores operations. Each phase has strict requirements.</div>';
+    html+=card('','Short-Term Containment','Stop the Bleeding',[
+      'Isolate affected systems from the network -- disable NIC or move to quarantine VLAN',
+      'Block attacker IPs/domains at firewall and DNS level immediately',
+      'Disable compromised accounts and reset credentials',
+      'Capture volatile data (memory, active connections) before isolation when possible'
+    ]);
+    html+=card('warn','Evidence Preservation','Before You Touch Anything',[
+      'Create forensic disk images before any changes are made',
+      'Capture full memory dumps and volatile system state',
+      'Preserve original log files -- copy to write-protected storage',
+      'Document the chain of custody for all forensic artifacts collected',
+      'Always consult legal/compliance before actions that could destroy evidence'
+    ]);
+    html+=card('danger','Eradication','Remove All Traces',[
+      'Identify and remove ALL malicious artifacts: malware, web shells, backdoors, persistence mechanisms',
+      'Revoke and rotate ALL credentials that may have been exposed -- do not assume only known-used credentials are compromised',
+      'Apply patches to ALL exploited or reachable systems',
+      'Validate removal using independent scanning tools -- not just the AV/EDR that missed the initial compromise'
+    ]);
+    html+=card('ok','Recovery &amp; Post-Incident','Restore and Learn',[
+      'Restore from known-good backups that pre-date the compromise -- never restore from the compromise window',
+      'Rebuild compromised systems from scratch where possible',
+      'Return systems to operation in phases with enhanced monitoring',
+      'Conduct After-Action Review (AAR) within 2 weeks -- blameless retrospective format',
+      'Required deliverables: Incident Ticket, Final Report, AAR Document, Corrective Action Plan, Updated IR Plan'
+    ]);
+
+  } else if(id==='comms'){
+    html+='<div class="sec-num">06 -- COMMUNICATION &amp; LEGAL</div>';
+    html+='<div class="sec-title">Communication During Incidents &amp; Legal Considerations</div>';
+    html+='<div class="sec-desc">Poor communication amplifies damage. Assume all communications may be monitored by the attacker until compromised systems are isolated.</div>';
+    html+=card('','Internal Communications','Secure Channels Only',[
+      'Use out-of-band communication channels -- if your email is compromised, the attacker reads your response plan',
+      'Establish a secure incident command channel (encrypted messaging, phone bridge)',
+      'Apply strict need-to-know -- limit details to those directly involved in response',
+      'Designate a single Communications Lead for all external-facing messaging'
+    ]);
+    html+=card('danger','What NOT to Do','Communication Failures Kill Response',[
+      'Do NOT discuss incident details on potentially compromised systems',
+      'Do NOT post about the incident on social media',
+      'Do NOT make promises about timelines, data safety, or root cause before investigation completes',
+      'Do NOT destroy evidence in an attempt to limit liability -- this may constitute obstruction'
+    ]);
+    html+=card('warn','Legal &amp; Regulatory Frameworks','Know Your Obligations',[
+      '<strong>FISMA:</strong> Report major incidents to US-CERT within 1 hour of discovery',
+      '<strong>CIRCIA 2022:</strong> 72-hour incident reporting, 24-hour ransom payment reporting to CISA',
+      '<strong>HIPAA:</strong> PHI breaches affecting 500+ individuals reported to HHS within 60 days',
+      '<strong>DFARS:</strong> Cyber incidents involving CDI reported to DoD within 72 hours',
+      '<strong>EO 14028:</strong> Agencies must log cyber data, share threat info with CISA, maintain IR capabilities',
+      '<strong>State Laws:</strong> All 50 states have breach notification laws with 30-90 day timelines'
+    ]);
+    html+=card('ok','CISA Resources','Free Tools Available to You',[
+      '<strong>CISA Learning Center:</strong> learning.cisa.gov -- free IR eLearning modules',
+      '<strong>Tabletop Exercises:</strong> cisa.gov/cybersecurity-training-exercises -- pre-built TTX scenarios',
+      '<strong>Incident Reporting:</strong> us-cert.cisa.gov/forms/report -- 24/7 online reporting',
+      '<strong>NIST SP 800-61 Rev. 2:</strong> csrc.nist.gov -- foundational federal IR guide, required reading'
+    ]);
+
+    html+=card('','Key Takeaways','Remember These',[
+      '<strong>Report Immediately:</strong> SEV-1 = now. SEV-2 = 1 hour. CISA = 72 hours. Late reporting is a violation.',
+      '<strong>Know Your Role:</strong> Understand your responsibilities before an incident -- not during one',
+      '<strong>Preserve Evidence:</strong> Capture volatile data before containment. Never destroy evidence.',
+      '<strong>Escalate Early:</strong> If uncertain, escalate. Delayed escalation is the #1 cause of incidents growing catastrophic.',
+      '<strong>Post-Incident = Mandatory:</strong> AAR, lessons learned, and corrective action plan are required deliverables.'
+    ]);
+  }
+  html+='<div class="nav"><div class="dots">'+dots()+'</div><button class="btn btn-p" onclick="nextStep()">'+(id==='comms'?'Start Quiz -->':'Continue -->')+'</button></div>';
+  return html;
+}
+
+function renderQuiz(qi){
+  var q=qs[qi];
+  var answered=answers[qi]!==undefined;
+  var html='';
+  html+='<div class="sec-num">KNOWLEDGE CHECK</div>';
+  html+='<div class="sec-title">Quiz</div>';
+  html+='<div class="quiz-box">';
+  html+='<div class="q-counter">QUESTION '+(qi+1)+' / '+qs.length+'</div>';
+  html+='<div class="q-text">'+q.q+'</div>';
+  html+='<div class="options">';
+  var letters=['A','B','C','D'];
+  q.opts.forEach(function(o,i){
+    var cls='opt';
+    if(answered){cls+=' off';if(i===q.ans) cls+=' correct';else if(i===answers[qi]) cls+=' wrong';}
+    html+='<button class="'+cls+'" onclick="answerQ('+qi+','+i+')">';
+    html+='<span class="opt-letter">'+letters[i]+'</span><span>'+o+'</span></button>';
+  });
+  html+='</div>';
+  var isCorrect=answered&&answers[qi]===q.ans;
+  html+='<div class="feedback'+(answered?' show':'')+(answered&&!isCorrect?' bad':'')+'">'+(answered?(isCorrect?'+ ':'x ')+q.fb:'')+'</div>';
+  html+='</div>';
+  var isLast=qi===qs.length-1;
+  html+='<div class="nav"><div class="dots">'+dots()+'</div><button class="btn btn-p" id="nbtn" '+(answered?'':'disabled')+' onclick="nextStep()">'+(isLast?'Finish -->':'Next -->')+'</button></div>';
+  return html;
+}
+
+function renderDone(){
+  var pct=Math.round((correct/qs.length)*100);
+  var passed=pct>=80;
+  var now=new Date();
+  var ds=now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var html='<div class="done-wrap">';
+  if(passed){
+    html+='<div class="done-icon">&#x1f6e1;</div>';
+    html+='<h2>Congratulations, '+userName+'!</h2>';
+    html+='<p>You have successfully completed Incident Response Training (IR-2) aligned to CISA and NIST SP 800-61 Rev. 2 for IL5 / FedRAMP High environments. This record should be retained as evidence for ConMon and 3PAO assessments.</p>';
+  } else {
+    html+='<div class="done-icon">&#x1f4cb;</div>';
+    html+='<h2>Review Recommended</h2>';
+    html+='<p>'+userName+', you scored below the 80% passing threshold. Review the content sections and retake the quiz when ready.</p>';
+  }
+  html+='<div class="score '+(passed?'pass':'fail')+'">'+pct+'%</div>';
+  html+='<p style="font-family:var(--mono);font-size:11px;color:var(--dim)">'+correct+' / '+qs.length+' CORRECT</p>';
+  if(passed){
+    html+='<div class="cert"><div class="cert-lbl">IR-2 Training Completion Record</div>';
+    html+='<div class="cert-row">Name: <span>'+userName+'</span></div>';
+    html+='<div class="cert-row">Course: <span>Incident Response Training (IR-2)</span></div>';
+    html+='<div class="cert-row">Framework: <span>IL5 / FedRAMP High / NIST 800-61r2 / CISA</span></div>';
+    html+='<div class="cert-row">Control: <span>IR-2 (Incident Response Training)</span></div>';
+    html+='<div class="cert-row">Score: <span>'+pct+'% ('+correct+'/'+qs.length+')</span></div>';
+    html+='<div class="cert-row">Date: <span>'+ds+'</span></div>';
+    html+='<div class="cert-row">Topics: <span>IR Lifecycle, Severity/Escalation, Reporting/CIRCIA, Containment, Eradication, Recovery, Post-Incident, Communication</span></div>';
+    html+='</div>';
+  }
+  html+='<br/><br/><button class="btn '+(passed?'btn-g':'btn-p')+'" onclick="restart()">Retake</button>';
+  html+='</div>';
+  return html;
+}
+
+function render(){
+  var s=steps[step];
+  var html='';
+  if(s.type==='reg') html=renderReg();
+  else if(s.type==='c') html=renderContent(s.id);
+  else if(s.type==='q') html=renderQuiz(s.id);
+  else html=renderDone();
+  document.getElementById('root').innerHTML=html;
+  updateProg();
+}
+function restart(){step=0;answers={};correct=0;render();window.scrollTo(0,0);}
+render();
+</script>
+</body>
+</html>
