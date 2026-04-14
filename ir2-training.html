@@ -114,6 +114,21 @@ tr:last-child td{border:none}
 <div class="main" id="root"></div>
 
 <script>
+/* ── GOOGLE FORM CONFIG ──────────────────────────────────────────────
+   1. Create a Google Form with 5 Short Answer fields:
+      Full Name, Completion Date, Course, Score, Completion Hash
+   2. Click the 3-dot menu → Get pre-filled link → fill dummy values → Get link
+   3. Paste the entry IDs below (the entry.XXXXXXXXX values from the URL)
+   4. Set FORM_URL to your form's base URL
+   ──────────────────────────────────────────────────────────────────── */
+var FORM_URL   = 'PASTE_YOUR_GOOGLE_FORM_URL_HERE';
+var FIELD_NAME   = 'entry.XXXXXXXXX';
+var FIELD_DATE   = 'entry.XXXXXXXXX';
+var FIELD_COURSE = 'entry.XXXXXXXXX';
+var FIELD_SCORE  = 'entry.XXXXXXXXX';
+var FIELD_HASH   = 'entry.XXXXXXXXX';
+var COURSE_NAME  = 'Incident Response Training (IR-2)';
+
 var step=0, answers={}, correct=0, userName='';
 
 var steps=[
@@ -461,6 +476,23 @@ function renderQuiz(qi){
   return html;
 }
 
+function genHash(str){
+  var h=5381;
+  for(var i=0;i<str.length;i++) h=((h<<5)+h)+str.charCodeAt(i);
+  return 'XAI-IR2-'+('000000'+Math.abs(h).toString(16).toUpperCase()).slice(-6);
+}
+
+function submitCompletion(hash,pct,ds){
+  if(FORM_URL.indexOf('PASTE')!==-1){alert('Google Form not configured yet. Please send a screenshot of your completion record to your ISSM.');return;}
+  var url=FORM_URL+'?usp=pp_url'
+    +'&'+FIELD_NAME+'='+encodeURIComponent(userName)
+    +'&'+FIELD_DATE+'='+encodeURIComponent(ds)
+    +'&'+FIELD_COURSE+'='+encodeURIComponent(COURSE_NAME)
+    +'&'+FIELD_SCORE+'='+encodeURIComponent(pct+'%')
+    +'&'+FIELD_HASH+'='+encodeURIComponent(hash);
+  window.open(url,'_blank');
+}
+
 function renderDone(){
   var pct=Math.round((correct/qs.length)*100);
   var passed=pct>=80;
@@ -479,6 +511,7 @@ function renderDone(){
   html+='<div class="score '+(passed?'pass':'fail')+'">'+pct+'%</div>';
   html+='<p style="font-family:var(--mono);font-size:11px;color:var(--dim)">'+correct+' / '+qs.length+' CORRECT</p>';
   if(passed){
+    var hash=genHash(userName+ds+pct+correct);
     html+='<div class="cert"><div class="cert-lbl">IR-2 Training Completion Record</div>';
     html+='<div class="cert-row">Name: <span>'+userName+'</span></div>';
     html+='<div class="cert-row">Course: <span>Incident Response Training (IR-2)</span></div>';
@@ -486,8 +519,10 @@ function renderDone(){
     html+='<div class="cert-row">Control: <span>IR-2 (Incident Response Training)</span></div>';
     html+='<div class="cert-row">Score: <span>'+pct+'% ('+correct+'/'+qs.length+')</span></div>';
     html+='<div class="cert-row">Date: <span>'+ds+'</span></div>';
+    html+='<div class="cert-row">Completion ID: <span style="color:var(--accent);letter-spacing:.08em">'+hash+'</span></div>';
     html+='<div class="cert-row">Topics: <span>IR Lifecycle, Severity/Escalation, Reporting/CIRCIA, Containment, Eradication, Recovery, Post-Incident, Communication</span></div>';
     html+='</div>';
+    html+='<br/><button class="btn btn-p" onclick="submitCompletion(\''+hash+'\','+pct+',\''+ds+'\')">Submit Completion Record</button>&nbsp;&nbsp;';
   }
   html+='<br/><br/><button class="btn '+(passed?'btn-g':'btn-p')+'" onclick="restart()">Retake</button>';
   html+='</div>';
