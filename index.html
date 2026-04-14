@@ -8,60 +8,87 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0a0e14;--surface:#111722;--surface2:#1a2233;--border:#1f2d47;--accent:#00d4ff;--accent2:#ff6b35;--green:#00ff9f;--red:#ff4757;--yellow:#ffd32a;--text:#c8d8f0;--dim:#5a7aa0;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 16px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;padding:40px 16px}
+.wrap{max-width:900px;margin:0 auto}
 .badges{display:flex;gap:6px;align-items:center;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
 .badge{font-family:var(--mono);font-size:9px;letter-spacing:.1em;padding:3px 7px;border:1px solid}
 .badge-blue{color:var(--accent);border-color:var(--accent)}
 .badge-yellow{color:var(--yellow);border-color:var(--yellow)}
 h1{font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;text-align:center}
-.subtitle{font-size:13px;color:var(--dim);text-align:center;margin-bottom:40px;max-width:500px;line-height:1.6}
-.grid{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;max-width:700px;width:100%}
-.card{background:var(--surface);border:1px solid var(--border);padding:28px 24px;flex:1;min-width:280px;max-width:340px;position:relative;text-decoration:none;transition:border-color .2s,transform .2s}
+.subtitle{font-size:13px;color:var(--dim);text-align:center;margin-bottom:40px;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--border);padding:24px 20px;position:relative;text-decoration:none;transition:border-color .2s,transform .2s;display:block}
 .card:hover{border-color:var(--accent);transform:translateY(-2px)}
 .card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px}
-.card-at3::before{background:linear-gradient(90deg,var(--accent),var(--green))}
-.card-ir2::before{background:linear-gradient(90deg,var(--accent2),var(--red))}
-.card-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;display:inline-block;padding:2px 6px;border:1px solid}
-.tag-at3{color:var(--accent);border-color:var(--accent)}
-.tag-ir2{color:var(--accent2);border-color:var(--accent2)}
-.card h2{font-size:17px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.3}
-.card p{font-size:12px;color:var(--dim);line-height:1.6;margin-bottom:16px}
-.card-meta{font-family:var(--mono);font-size:10px;color:var(--dim);display:flex;gap:12px;flex-wrap:wrap}
-.card-meta span{display:flex;align-items:center;gap:4px}
+.c1::before{background:linear-gradient(90deg,var(--accent),var(--green))}
+.c2::before{background:linear-gradient(90deg,var(--accent2),var(--red))}
+.c3::before{background:linear-gradient(90deg,var(--yellow),var(--accent2))}
+.c4::before{background:linear-gradient(90deg,var(--green),var(--accent))}
+.c5::before{background:linear-gradient(90deg,var(--red),var(--yellow))}
+.c6::before{background:linear-gradient(90deg,var(--accent),var(--yellow))}
+.c7::before{background:linear-gradient(90deg,var(--green),var(--yellow))}
+.card-tag{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;display:inline-block;padding:2px 6px;border:1px solid;color:var(--accent);border-color:var(--accent)}
+.card h2{font-size:15px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.3}
+.card p{font-size:11px;color:var(--dim);line-height:1.5;margin-bottom:12px}
+.card-meta{font-family:var(--mono);font-size:9px;color:var(--dim);display:flex;gap:10px;flex-wrap:wrap}
 .footer{margin-top:48px;font-family:var(--mono);font-size:10px;color:var(--dim);text-align:center;letter-spacing:.05em}
 </style>
 </head>
 <body>
+<div class="wrap">
 <div class="badges">
   <div class="badge badge-blue">IL5 / FEDRAMP HIGH</div>
   <div class="badge badge-yellow">FOR OFFICIAL USE ONLY</div>
 </div>
 <h1>Role-Based Training Portal</h1>
-<p class="subtitle">NIST SP 800-53 Rev 5 mandates role-based security training (AT-3) for all personnel with significant security responsibilities. Select a training module below.</p>
+<p class="subtitle">NIST SP 800-53 Rev 5 mandates role-based security training for all personnel with significant security responsibilities. Select a training module below to begin.</p>
 
 <div class="grid">
-  <a href="at3-training.html" class="card card-at3">
-    <div class="card-tag tag-at3">AT-3</div>
-    <h2>Secure Developer / CI-CD Training</h2>
-    <p>Secure coding, CI/CD pipeline hardening, artifact integrity, secrets management, and change control for developers and DevOps engineers.</p>
-    <div class="card-meta">
-      <span>7 questions</span>
-      <span>80% to pass</span>
-      <span>12 NIST controls</span>
-    </div>
-  </a>
-  <a href="ir2-training.html" class="card card-ir2">
-    <div class="card-tag tag-ir2">IR-2</div>
+  <a href="ir2-training.html" class="card c2">
+    <div class="card-tag">IR-2</div>
     <h2>Incident Response Training</h2>
     <p>IR lifecycle, severity classification, reporting timelines, CIRCIA obligations, containment, eradication, recovery, and post-incident procedures.</p>
-    <div class="card-meta">
-      <span>14 questions</span>
-      <span>80% to pass</span>
-      <span>CISA aligned</span>
-    </div>
+    <div class="card-meta"><span>14 questions</span><span>45 min</span><span>CISA aligned</span></div>
+  </a>
+  <a href="priv-user-training.html" class="card c3">
+    <div class="card-tag">AT-3</div>
+    <h2>Privileged User Cybersecurity</h2>
+    <p>Least privilege, admin account controls, MFA, audit logging, change management, PAM, and incident reporting for sysadmins, DBAs, and network engineers.</p>
+    <div class="card-meta"><span>14 questions</span><span>30 min</span><span>CDSE DS-IA112.06</span></div>
+  </a>
+  <a href="secdev-training.html" class="card c1">
+    <div class="card-tag">AT-3</div>
+    <h2>Secure Developer / CI-CD</h2>
+    <p>SSDF framework, secure coding, OWASP Top 10, secrets management, CI/CD pipeline hardening, supply chain risk, and SBOM requirements.</p>
+    <div class="card-meta"><span>5 questions</span><span>30 min</span><span>NIST 800-218</span></div>
+  </a>
+  <a href="cp3-training.html" class="card c4">
+    <div class="card-tag">CP-3</div>
+    <h2>Business Contingency / DR</h2>
+    <p>NIST 800-34 framework, BIA, RTO/RPO, backup strategies, alternate recovery sites, DR team roles, plan activation, and testing requirements.</p>
+    <div class="card-meta"><span>5 questions</span><span>30 min</span><span>NIST 800-34</span></div>
+  </a>
+  <a href="sr11-training.html" class="card c5">
+    <div class="card-tag">SR-11(1)</div>
+    <h2>Supply Chain / Anti-Counterfeit</h2>
+    <p>Counterfeit electronic parts detection, authorized sources, NDAA/DFARS requirements, visual and electrical indicators, GIDEP reporting, and traceability.</p>
+    <div class="card-meta"><span>12 questions</span><span>45 min</span><span>DAU CLL032</span></div>
+  </a>
+  <a href="at4-training.html" class="card c6">
+    <div class="card-tag">AT-4</div>
+    <h2>Training Records & Tracking</h2>
+    <p>AT-4 control requirements, required data elements, record retention, monitoring and reporting cadence, audit readiness, and common deficiencies.</p>
+    <div class="card-meta"><span>10 questions</span><span>30 min</span><span>NIST 800-53</span></div>
+  </a>
+  <a href="at3-training.html" class="card c7">
+    <div class="card-tag">AT-3</div>
+    <h2>Secure Dev / CI-CD (Extended)</h2>
+    <p>Extended training covering SDLC security, CI/CD pipeline controls, artifact integrity, change management, and 12 NIST control mappings.</p>
+    <div class="card-meta"><span>7 questions</span><span>30 min</span><span>NIST 800-53</span></div>
   </a>
 </div>
 
-<div class="footer">NIST 800-53r5 &middot; FedRAMP High &middot; DoD IL5 &middot; CISA</div>
+<div class="footer">NIST 800-53r5 &middot; NIST 800-34 &middot; NIST 800-218 &middot; FedRAMP High &middot; DoD IL5 &middot; CISA &middot; DFARS</div>
+</div>
 </body>
 </html>
