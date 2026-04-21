@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Privacy &amp; Data Protection / INFOSEC-101 | xAI</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0e14;--surface:#111722;--surface2:#1a2233;--border:#1f2d47;--accent:#00d4ff;--accent2:#ff6b35;--green:#00ff9f;--red:#ff4757;--yellow:#ffd32a;--text:#c8d8f0;--dim:#5a7aa0;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px;position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.badge{font-family:var(--mono);font-size:9px;letter-spacing:.1em;padding:3px 7px;border:1px solid}
+.badge-blue{color:var(--accent);border-color:var(--accent)}
+.badge-yellow{color:var(--yellow);border-color:var(--yellow)}
+.badge-red{color:var(--red);border-color:var(--red)}
+.hdr-title{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.prog-wrap{display:flex;align-items:center;gap:8px}
+.prog-label{font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap}
+.prog-outer{width:80px;height:3px;background:var(--border)}
+.prog-inner{height:100%;background:var(--accent);box-shadow:0 0 6px var(--accent);transition:width .4s}
+.main{max-width:700px;margin:0 auto;padding:28px 16px 80px}
+.sec-num{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;margin-bottom:6px}
+.sec-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.2}
+.sec-desc{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:24px}
+.card{background:var(--surface);border:1px solid var(--border);padding:20px 20px 20px 24px;margin-bottom:14px;position:relative}
+.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent)}
+.card.warn::before{background:var(--yellow)}.card.danger::before{background:var(--red)}.card.ok::before{background:var(--green)}
+.card-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.card.warn .card-lbl{color:var(--yellow)}.card.danger .card-lbl{color:var(--red)}.card.ok .card-lbl{color:var(--green)}
+.card h3{font-size:14px;font-weight:600;color:#fff;margin-bottom:8px}
+.card p,.card li{font-size:13px;color:var(--text);line-height:1.65}
+.card ul{list-style:none;padding:0}
+.card ul li{padding:4px 0 4px 14px;position:relative}
+.card ul li::before{content:'>';position:absolute;left:0;color:var(--accent);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+th{text-align:left;font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--dim);padding:6px 10px;border-bottom:1px solid var(--border);text-transform:uppercase}
+td{padding:8px 10px;border-bottom:1px solid rgba(31,45,71,.5);color:var(--text);vertical-align:top;font-size:12px}
+tr:last-child td{border:none}
+.tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 5px;letter-spacing:.04em}
+.t-blue{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.3)}
+.t-red{background:rgba(255,71,87,.1);color:var(--red);border:1px solid rgba(255,71,87,.3)}
+.t-yel{background:rgba(255,211,42,.1);color:var(--yellow);border:1px solid rgba(255,211,42,.3)}
+.quiz-box{background:var(--surface);border:1px solid var(--border);padding:24px 20px;position:relative}
+.quiz-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.q-counter{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:12px}
+.q-text{font-size:15px;font-weight:600;color:#fff;line-height:1.5;margin-bottom:20px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;cursor:pointer;display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text);text-align:left;width:100%;transition:border-color .15s}
+.opt:hover{border-color:var(--accent);color:#fff}
+.opt.correct{border-color:var(--green);background:rgba(0,255,159,.05);color:var(--green)}
+.opt.wrong{border-color:var(--red);background:rgba(255,71,87,.05);color:var(--red)}
+.opt.off{cursor:default;pointer-events:none}
+.opt-letter{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);min-width:16px;padding-top:1px}
+.opt.correct .opt-letter{color:var(--green)}.opt.wrong .opt-letter{color:var(--red)}
+.feedback{margin-top:16px;padding:13px 14px;border-left:3px solid var(--green);font-size:13px;color:var(--text);line-height:1.6;display:none}
+.feedback.show{display:block}.feedback.bad{border-color:var(--red)}
+.feedback strong{color:#fff}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:28px}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border)}
+.dot.active{background:var(--accent);box-shadow:0 0 5px var(--accent)}
+.dot.done{background:var(--green)}
+.btn{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:10px 20px;border:1px solid;cursor:pointer;background:transparent;transition:all .15s}
+.btn-p{border-color:var(--accent);color:var(--accent)}.btn-p:hover{background:var(--accent);color:var(--bg)}.btn-p:disabled{opacity:.3;cursor:default;pointer-events:none}
+.btn-g{border-color:var(--border);color:var(--dim)}.btn-g:hover{border-color:var(--dim);color:var(--text)}
+.done-wrap{text-align:center;padding:48px 0}
+.done-icon{font-size:44px;margin-bottom:16px}
+.done-wrap h2{font-size:24px;font-weight:700;color:#fff;margin-bottom:8px}
+.done-wrap p{font-size:13px;color:var(--dim);max-width:460px;margin:0 auto 24px;line-height:1.6}
+.score{font-family:var(--mono);font-size:44px;font-weight:600;text-shadow:0 0 24px rgba(0,255,159,.4);margin:16px 0 4px}
+.score.pass{color:var(--green)}.score.fail{color:var(--red)}
+.cert{border:1px solid var(--border);background:var(--surface);padding:20px 24px;display:inline-block;text-align:left;margin-top:20px;max-width:440px;width:100%}
+.cert-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--accent);margin-bottom:12px;text-transform:uppercase}
+.cert-row{font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:4px}
+.cert-row span{color:var(--text)}
+.reg-box{background:var(--surface);border:1px solid var(--border);padding:32px 28px;max-width:420px;margin:0 auto}
+.reg-box label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+.reg-box input{width:100%;background:var(--surface2);border:1px solid var(--border);color:#fff;font-family:var(--sans);font-size:14px;padding:10px 12px;margin-bottom:20px;outline:none;transition:border-color .15s}
+.reg-box input:focus{border-color:var(--accent)}
+.reg-box input[readonly]{color:var(--dim);cursor:default}
+.ack-box{background:var(--surface);border:1px solid var(--border);padding:20px 24px;text-align:left;margin:20px auto 0;max-width:440px;width:100%}
+.ack-box label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:12px;color:var(--text);line-height:1.6}
+.ack-box input[type=checkbox]{margin-top:4px;accent-color:var(--accent);width:16px;height:16px;flex-shrink:0}
+.ack-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="badges">
+    <div class="badge badge-blue">xAI</div>
+    <div class="badge badge-red">PDP / INFOSEC-101</div>
+    <div class="badge badge-yellow">PRIVILEGED &amp; CONFIDENTIAL</div>
+    <div class="hdr-title">Privacy &amp; Data Protection Training</div>
+  </div>
+  <div class="prog-wrap">
+    <span class="prog-label" id="plbl">0/15</span>
+    <div class="prog-outer"><div class="prog-inner" id="pbar" style="width:0%"></div></div>
+  </div>
+</header>
+<div class="main" id="root"></div>
+<script>
+var FORM_URL   = 'https://docs.google.com/forms/d/e/1FAIpQLSdHsEWs-iPTGncIBdIiFGaEnxl6MXMN6IHFnUVDGyG1Trf4fw/viewform';
+var FIELD_NAME   = 'entry.1084561241';
+var FIELD_DATE   = 'entry.989191631';
+var FIELD_COURSE = 'entry.1455054579';
+var FIELD_SCORE  = 'entry.766034301';
+var FIELD_HASH   = 'entry.1157983501';
+var COURSE_NAME  = 'Privacy & Data Protection / INFOSEC-101';
+
+var step=0,answers={},correct=0,userName='',ackChecked=false;
+
+var steps=[
+  {type:'reg'},
+  {type:'c',id:'pdp'},
+  {type:'c',id:'privacy'},
+  {type:'c',id:'ftc'},
+  {type:'c',id:'security'},
+  {type:'c',id:'policy'},
+  {type:'q',id:0},{type:'q',id:1},{type:'q',id:2},{type:'q',id:3},{type:'q',id:4},
+  {type:'q',id:5},{type:'q',id:6},{type:'q',id:7},{type:'q',id:8},{type:'q',id:9},
+  {type:'done'}
+];
+
+var qs=[
+  {q:'Under xAI\'s privacy framework, what constitutes "personal data"?',
+   opts:['Only government-issued ID numbers and Social Security numbers','Any data that can be tied to an individual','Only data that users explicitly submit through forms','Only data stored in xAI\'s production databases'],ans:1,
+   fb:'<strong>Correct.</strong> Personal data is defined broadly: if it can be tied to an individual, it is personal data. This includes names, email addresses, IP addresses, device identifiers, usage patterns, and any other information that could directly or indirectly identify a person.'},
+  {q:'What is the FIRST action you should take if you discover a potential security breach involving unauthorized access to personal data?',
+   opts:['Notify your direct manager and wait for instructions','Attempt to fix the vulnerability yourself before reporting','Report immediately at go/SecurityIncident','Post about it in the team Slack channel for visibility'],ans:2,
+   fb:'<strong>Correct.</strong> Security incidents, breaches, and suspected unauthorized access to personal data must be reported immediately at go/SecurityIncident. Do not attempt to remediate on your own or delay reporting -- every minute counts in containing a breach and meeting regulatory notification timelines.'},
+  {q:'What does xAI\'s FTC Consent Order require regarding new products or services that use user data?',
+   opts:['Products can launch freely as long as marketing materials are accurate','A privacy assessment must be conducted to identify and remediate material risks before launch','Only products handling financial data require a privacy assessment','Privacy reviews are optional but recommended for new products'],ans:1,
+   fb:'<strong>Correct.</strong> The FTC Consent Order requires xAI to conduct a privacy assessment of every new or modified product or service that uses data covered by the order. The assessment must identify and remediate material privacy risks before the product can launch.'},
+  {q:'Which of the following is a core principle of Privacy by Design?',
+   opts:['Privacy controls should be added after product launch based on user complaints','Privacy should be embedded into the design of products from the start, not bolted on after','Privacy features should be optional add-ons that users can purchase','Privacy requirements only apply to products handling European user data'],ans:1,
+   fb:'<strong>Correct.</strong> Privacy by Design means taking a proactive and preventative approach -- embedding privacy into the design of products and services from the very beginning, making privacy the default setting, and maintaining end-to-end security throughout the data lifecycle.'},
+  {q:'You are about to publish a blog post that discusses how xAI handles user data for ad targeting. What must you do first?',
+   opts:['Get approval from your engineering manager','Submit it for publication legal review at go/publication-review','Post it and update later if legal has concerns','Only review is needed if the post mentions specific user data'],ans:1,
+   fb:'<strong>Correct.</strong> Under the FTC Consent Order, xAI must not make misrepresentations about its privacy and security practices, including how ads and ad targeting work. Any public statement, publication, or post about xAI\'s privacy and security practices must go through publication legal review at go/publication-review.'},
+  {q:'What is the purpose of a Data Protection Impact Assessment (DPIA)?',
+   opts:['To calculate the financial cost of storing user data','To identify privacy risks and demonstrate compliance with applicable laws before a product or feature launches','To audit employee access to internal databases quarterly','To benchmark xAI\'s privacy practices against competitors'],ans:1,
+   fb:'<strong>Correct.</strong> DPIAs help incorporate data protection considerations into organizational planning (Privacy by Design), identify risks to personal data, and demonstrate xAI\'s compliance with applicable laws to supervisory authorities. A product or feature can only launch after the entire privacy review process, including a DPIA when necessary, is finalized.'},
+  {q:'Which of the following is a warning sign of a social engineering attack targeting xAI employees?',
+   opts:['A colleague asking you to review a pull request in your team\'s repository','A LinkedIn message from an unknown person with unusual interest in xAI\'s internal policies, leadership, and security practices','A calendar invite from your manager for a scheduled 1:1','An automated alert from your company-issued security software'],ans:1,
+   fb:'<strong>Correct.</strong> Social engineering warning signs include: LinkedIn solicitations from unknown parties, unusual interest in xAI policy and leadership, online-only interactions, limited social media presence, emotional pleas, offers of money or favors, and evasiveness about personal details. Report suspicious approaches at go/phishy.'},
+  {q:'You receive an email that appears to be from Microsoft asking you to verify your account credentials urgently. The sender\'s email address is from a Hotmail domain. What should you do?',
+   opts:['Click the link and verify your credentials since it mentions Microsoft','Reply to ask if the email is legitimate','Forward the email to go/phishy for review by the Security team and do not click any links','Delete the email and take no further action'],ans:2,
+   fb:'<strong>Correct.</strong> This email shows multiple phishing indicators: sender domain mismatch (Hotmail vs Microsoft), sense of urgency, and a request for credentials. Forward suspicious emails to go/phishy for review. Never click links or enter credentials from unverified emails. Never assume simply deleting the email is sufficient -- the Security team needs to know about active phishing campaigns.'},
+  {q:'What is Flyway in the context of xAI\'s privacy and data protection processes?',
+   opts:['An internal tool for managing database migrations','xAI\'s mandatory process for developing new or improved products and services, designed to meet legal and regulatory requirements','A third-party vendor used for background checks','An incident response playbook for data breaches'],ans:1,
+   fb:'<strong>Correct.</strong> Flyway is xAI\'s mandatory process for developing new or improved products and services for internal or external customers. It is designed to meet xAI\'s legal and regulatory requirements and offers Classic or Lite workflows. All product development must go through Flyway at go/flyway.'},
+  {q:'What are the potential consequences for violating xAI\'s Security and Privacy Policy (SPP)?',
+   opts:['A verbal warning from your manager with no further action','Violations are investigated and may result in removal of access, disciplinary action up to and including termination, and possible legal action','Employees receive additional training but face no disciplinary action','Only contractors face consequences; full-time employees are exempt'],ans:1,
+   fb:'<strong>Correct.</strong> The SPP applies to everyone who works for xAI -- FTEs and contractors alike. Violations are investigated and may result in adverse employment actions including removal of access to xAI systems, disciplinary action up to and including termination, and possible legal action. Review the full policy at go/securitypolicy.'}
+];
+
+function dots(){
+  var vis=steps.filter(function(s){return s.type!=='done'&&s.type!=='reg';});
+  return vis.map(function(s,i){var idx=steps.indexOf(s);var c='dot';if(idx<step) c+=' done';else if(idx===step) c+=' active';return '<div class="'+c+'"></div>';}).join('');
+}
+function nextStep(){if(step<steps.length-1){step++;render();window.scrollTo(0,0);}}
+function updateProg(){
+  var total=steps.filter(function(s){return s.type!=='done'&&s.type!=='reg';}).length;
+  var cur=Math.max(0,step-1);var pct=Math.round((cur/total)*100);
+  document.getElementById('pbar').style.width=pct+'%';
+  document.getElementById('plbl').textContent=cur+'/'+total;
+}
+function answerQ(qi,chosen){if(answers[qi]!==undefined) return;answers[qi]=chosen;if(chosen===qs[qi].ans) correct++;render();}
+function card(type,label,heading,bodyOrItems){
+  var cls='card'+(type==='warn'?' warn':type==='danger'?' danger':type==='ok'?' ok':'');var body='';
+  if(typeof bodyOrItems==='string') body='<p>'+bodyOrItems+'</p>';
+  else body='<ul>'+bodyOrItems.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>';
+  return '<div class="'+cls+'"><div class="card-lbl">'+label+'</div><h3>'+heading+'</h3>'+body+'</div>';
+}
+
+function renderReg(){
+  var now=new Date();var ds=now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var html='<div class="sec-num">REGISTRATION</div>';
+  html+='<div class="sec-title">Privacy &amp; Data Protection / INFOSEC-101</div>';
+  html+='<div class="sec-desc">xAI | Privileged &amp; Confidential | 80% passing score required</div>';
+  html+='<div class="reg-box">';
+  html+='<label>Full Name (as it will appear on your completion record)</label>';
+  html+='<input type="text" id="regName" placeholder="e.g. Jane Doe" value="'+userName+'" autocomplete="name"/>';
+  html+='<label>Date</label>';
+  html+='<input type="text" value="'+ds+'" readonly/>';
+  html+='<button class="btn btn-p" style="width:100%" onclick="startTraining()">Begin Training --></button>';
+  html+='</div>';
+  return html;
+}
+function startTraining(){var n=document.getElementById('regName').value.trim();if(!n){document.getElementById('regName').style.borderColor='var(--red)';return;}userName=n;nextStep();}
+
+function renderContent(id){
+  var html='';
+  if(id==='pdp'){
+    html+='<div class="sec-num">01 -- PDP AT xAI</div>';
+    html+='<div class="sec-title">Privacy &amp; Data Protection at xAI</div>';
+    html+='<div class="sec-desc">PDP enables trust in xAI. Protecting personal data is an essential part of how we operate our business, comply with our legal obligations, and build user confidence.</div>';
+    html+=card('','Why PDP Matters','More Than Compliance','Privacy & Data Protection at xAI is about enabling trust. Protecting personal data is essential to how we operate our business, comply with our legal obligations, and remain transparent with our users and the public. Missing the mark on compliance is costly, disappointing to our users, and distracts from our core mission.');
+    html+=card('danger','The Stakes','What Happens When We Get It Wrong',[
+      '<strong>Harm to Users:</strong> Personal data exposure puts real people at risk',
+      '<strong>Regulatory Sanctions:</strong> FTC, GDPR, and other regulators can take enforcement action',
+      '<strong>Financials & Fines:</strong> Non-compliance can result in significant monetary penalties',
+      '<strong>Reputational Damage:</strong> Loss of customer and public trust is difficult to recover from',
+      '<strong>Report privacy risks:</strong> go/PrivacyRiskForm'
+    ]);
+    html+=card('ok','Your Role','Think Like an Owner',[
+      'Every xAI employee -- FTE and contractor -- is responsible for protecting personal data',
+      'If you find a security problem with any aspect of xAI\'s security, report immediately at go/SecurityIncident',
+      'If you think something bad is taking place, let PDP know at go/PrivacyRiskForm',
+      'Contact the PDP team anytime: pdpquestion@x.com'
+    ]);
+
+  } else if(id==='privacy'){
+    html+='<div class="sec-num">02 -- KEY PRIVACY CONCEPTS</div>';
+    html+='<div class="sec-title">Core Privacy Definitions &amp; Privacy by Design</div>';
+    html+='<div class="sec-desc">Before we go further, let\'s get on the same page about key terms and principles.</div>';
+    html+=card('','Key Definitions','Know the Terminology',[
+      '<strong>Data Subjects:</strong> Our users, you, anyone we collect data from or about',
+      '<strong>Personal Data:</strong> If it can be tied to an individual, it\'s personal data',
+      '<strong>Processing:</strong> Any activity performed on or any use of personal data',
+      '<strong>Breach:</strong> Unauthorized access to, or disclosure, destruction, alteration, or loss of personal data. Report at go/SecurityIncident'
+    ]);
+    html+=card('warn','Privacy by Design','Build It In From the Start',[
+      'Proactive and preventative approach to privacy and data protection',
+      'Privacy as the default -- not an opt-in feature',
+      'Privacy embedded into design from the earliest stages',
+      'Don\'t compromise on product functionality -- privacy and great products coexist',
+      'End-to-end security throughout the full data lifecycle',
+      'Visibility and transparency in all data practices'
+    ]);
+    html+=card('','Privacy Risk','What to Watch For',[
+      'Any potential concern that could impact personal data and people\'s privacy',
+      'Any action or omission which violates a privacy commitment that xAI has made to customers or regulators',
+      'If you identify a privacy risk, report it at go/PrivacyRiskForm'
+    ]);
+
+  } else if(id==='ftc'){
+    html+='<div class="sec-num">03 -- FTC CONSENT ORDER &amp; PRIVACY REVIEWS</div>';
+    html+='<div class="sec-title">Regulatory Requirements &amp; Product Review Processes</div>';
+    html+='<div class="sec-desc">xAI operates under an FTC Consent Order. Understanding its requirements is mandatory for all employees.</div>';
+    html+=card('danger','FTC Consent Order','All Employees Must Acknowledge',[
+      '<strong>No misrepresentations</strong> to the public about privacy, security, collection, sharing, or use of user data',
+      '<strong>Privacy assessment required</strong> for every new or modified product/service using covered data',
+      '<strong>Retain records</strong> from various lines of business for 5 years',
+      '<strong>Mandatory training</strong> for all employees -- FTE and contractors -- relating to the order',
+      'Questions? ftcqs@x.com | More info: go/FTC'
+    ]);
+    html+=card('warn','Public Statements','What You Cannot Say',[
+      'xAI must not make misrepresentations about its privacy and security practices',
+      'This includes: tools and choices users have, how personal data is handled, how ads and targeting work, how data is shared externally, and membership in privacy programs',
+      'Planning to publish, post, or speak about xAI\'s privacy/security practices? Submit for review at go/publication-review'
+    ]);
+    html+=card('','Privacy Reviews','When and How',[
+      'A comprehensive look at processing of personal data for a particular purpose, project, or product',
+      'Required before any new product or change to an existing product can launch',
+      'Kick off a review at go/CounselReview'
+    ]);
+    html+=card('ok','Flyway &amp; DPIAs','Product Development Process',[
+      '<strong>Flyway</strong> is xAI\'s mandatory process for developing new or improved products and services',
+      'Designed to meet xAI\'s legal and regulatory requirements',
+      'Offers Classic or Lite workflows to accommodate different project types',
+      '<strong>DPIAs</strong> (Data Protection Impact Assessments) identify risks and demonstrate compliance',
+      'A product or feature can only launch after the entire privacy review process is finalized, including a DPIA when necessary',
+      'Start at go/flyway'
+    ]);
+
+  } else if(id==='security'){
+    html+='<div class="sec-num">04 -- SECURITY THREATS &amp; ATTACK VECTORS</div>';
+    html+='<div class="sec-title">Threats to xAI &amp; How to Defend Against Them</div>';
+    html+='<div class="sec-desc">xAI faces threats from organized crime, nation-states, hacktivists, and internal actors. Understanding the attack landscape is your first line of defense.</div>';
+
+    html+='<div class="card" style="padding:0;overflow:auto"><table><thead><tr><th>Threat Actor</th><th>Motivation</th><th>Targets</th></tr></thead><tbody>';
+    html+='<tr><td style="color:#fff;font-weight:600">Organized Crime</td><td>Money & Data</td><td>xAI company & user data</td></tr>';
+    html+='<tr><td style="color:#fff;font-weight:600">Hacktivists</td><td>Political / Ideological</td><td>Disruption of business</td></tr>';
+    html+='<tr><td style="color:#fff;font-weight:600">Nation States</td><td>Political / Economic</td><td>xAI company & user data, IP</td></tr>';
+    html+='<tr><td style="color:#fff;font-weight:600">Internal Actors</td><td>Money, Malice, Neglect</td><td>Company data, user data, IP, financials</td></tr>';
+    html+='<tr><td style="color:#fff;font-weight:600">Trolls</td><td>Disruption</td><td>PII, service disruption</td></tr>';
+    html+='</tbody></table></div>';
+
+    html+=card('danger','Attack Vectors','How Threat Actors Compromise Systems',[
+      '<strong>Social Engineering (Human Hacking):</strong> Manipulating people into divulging information or taking actions',
+      '<strong>Phishing:</strong> Fraudulent emails designed to steal credentials or install malware',
+      '<strong>Business Email Compromise:</strong> Impersonating executives or partners to authorize fraudulent actions',
+      '<strong>Ransomware/Malware:</strong> Malicious software that encrypts or exfiltrates data',
+      '<strong>DDoS Attacks:</strong> Overwhelming systems with traffic to disrupt availability',
+      '<strong>Domain Squatting & Spoofing:</strong> Mimicking real domains to trick users (e.g., "x-safety.com" vs "xsafety.com")'
+    ]);
+    html+=card('warn','Social Engineering Warning Signs','Watch For These',[
+      'LinkedIn solicitations from unknown parties with unusual interest in xAI',
+      'Situations that seem "too good to be true"',
+      'Online-only interactions with evasiveness about personal details',
+      'Emotional pleas or promises of confidentiality',
+      'Unusual questions about xAI policy, leadership, or security',
+      'Offers of money, gifts, or favors',
+      'Report suspicious approaches: go/phishy or phishy@x.com'
+    ]);
+    html+=card('ok','Best Practices','Protect Yourself and xAI',[
+      '<strong>Use strong passwords</strong> -- use a password manager',
+      '<strong>Use Multi-Factor Authentication</strong> on all accounts',
+      '<strong>Install updates regularly</strong> -- patches close known vulnerabilities',
+      '<strong>Think before you click</strong> -- verify links and sender addresses',
+      '<strong>Check domains carefully</strong> -- attackers mimic real domains with subtle differences',
+      '<strong>No one at xAI will ever ask you</strong> to move support comms to WhatsApp or Telegram'
+    ]);
+    html+=card('','Phishing Red Flags','Spot These in Emails',[
+      'Sender email doesn\'t match the organization (e.g., "From: Microsoft" but email is from Hotmail)',
+      'Sense of urgency (e.g., "Urgent Virus Notification")',
+      'Generic salutations (e.g., "Dear Customer")',
+      'Typos and poor grammar',
+      'Unexpected attachments -- if you\'re not expecting one, don\'t open it',
+      'Requests for password or account verification',
+      'Shortened or misspelled URLs',
+      'Forward suspicious emails to go/phishy'
+    ]);
+
+  } else if(id==='policy'){
+    html+='<div class="sec-num">05 -- xAI SECURITY &amp; PRIVACY POLICY</div>';
+    html+='<div class="sec-title">SPP, Insider Threats, Background Checks &amp; Resources</div>';
+    html+='<div class="sec-desc">xAI\'s Security and Privacy Policy applies to everyone who works for xAI. Everyone.</div>';
+    html+=card('danger','SPP Enforcement','Violations Have Consequences',[
+      'The xAI Security and Privacy Policy (SPP) applies to <strong>everyone</strong> -- FTEs and contractors',
+      'Violations are investigated and may result in: removal of access to xAI systems, disciplinary action up to and including termination, and possible legal action',
+      'Review the full policy: go/securitypolicy'
+    ]);
+    html+=card('warn','Insider Threat Awareness','Protect From Within',[
+      'Routine reviews of activity on xAI systems',
+      'Protect non-public, confidential, and proprietary information',
+      'Adhere to privacy policies at all times',
+      'Safeguard company and user data',
+      'Report suspicious behaviors and solicitations: go/insiderticket or InsiderThreat@x.com',
+      'Confidential reporting: go/SpeakUp'
+    ]);
+    html+=card('','Background Checks','Every Employee Is Vetted',[
+      'Every new xAI employee undergoes a background check by a trusted vendor, reviewed by xAI Security',
+      'Includes: education verification, employment verification, criminal records, sanctions check, media & online presence',
+      'Results reviewed during the Background Security Review (BSR)',
+      'Policy details: go/secprivpolicy'
+    ]);
+    html+=card('ok','Generative AI Policy','Use AI Responsibly',[
+      'Only pre-authorized generative AI tools can be used at xAI',
+      'No confidential material or personal data should be inputted into AI tools',
+      'Reference the Gen AI Policy for complete guidance'
+    ]);
+    html+=card('','Key Resources','Links You Should Know',[
+      '<strong>Security incident or breach:</strong> go/SecurityIncident',
+      '<strong>General security questions:</strong> go/AskSecurity',
+      '<strong>Security guidance:</strong> go/InfoSecKB',
+      '<strong>Travel security:</strong> go/SecureTravel',
+      '<strong>All security go/ links:</strong> go/EngageSecurity',
+      '<strong>Development security review:</strong> go/Flyway',
+      '<strong>Suspicious links:</strong> go/Phishy',
+      '<strong>Security & Privacy Policy:</strong> go/SPP',
+      '<strong>Online Safety:</strong> go/OnlineSafety',
+      '<strong>PDP questions:</strong> pdpquestion@x.com',
+      '<strong>FTC questions:</strong> ftcqs@x.com'
+    ]);
+  }
+  html+='<div class="nav"><div class="dots">'+dots()+'</div><button class="btn btn-p" onclick="nextStep()">'+(id==='policy'?'Start Quiz -->':'Continue -->')+'</button></div>';
+  return html;
+}
+
+function renderQuiz(qi){
+  var q=qs[qi];var answered=answers[qi]!==undefined;var html='';
+  html+='<div class="sec-num">KNOWLEDGE CHECK</div><div class="sec-title">Quiz</div>';
+  html+='<div class="quiz-box"><div class="q-counter">QUESTION '+(qi+1)+' / '+qs.length+'</div>';
+  html+='<div class="q-text">'+q.q+'</div><div class="options">';
+  var letters=['A','B','C','D'];
+  q.opts.forEach(function(o,i){var cls='opt';if(answered){cls+=' off';if(i===q.ans) cls+=' correct';else if(i===answers[qi]) cls+=' wrong';}
+    html+='<button class="'+cls+'" onclick="answerQ('+qi+','+i+')"><span class="opt-letter">'+letters[i]+'</span><span>'+o+'</span></button>';});
+  html+='</div>';
+  var isCorrect=answered&&answers[qi]===q.ans;
+  html+='<div class="feedback'+(answered?' show':'')+(answered&&!isCorrect?' bad':'')+'">'+(answered?(isCorrect?'+ ':'x ')+q.fb:'')+'</div></div>';
+  var isLast=qi===qs.length-1;
+  html+='<div class="nav"><div class="dots">'+dots()+'</div><button class="btn btn-p" id="nbtn" '+(answered?'':'disabled')+' onclick="nextStep()">'+(isLast?'Finish -->':'Next -->')+'</button></div>';
+  return html;
+}
+
+function genHash(str){var h=5381;for(var i=0;i<str.length;i++) h=((h<<5)+h)+str.charCodeAt(i);return 'XAI-PDP-'+('000000'+Math.abs(h).toString(16).toUpperCase()).slice(-6);}
+
+function submitCompletion(hash,pct,ds){
+  if(FORM_URL.indexOf('PASTE')!==-1){alert('Google Form not configured yet.');return;}
+  var url=FORM_URL+'?usp=pp_url&'+FIELD_NAME+'='+encodeURIComponent(userName)+'&'+FIELD_DATE+'='+encodeURIComponent(ds)+'&'+FIELD_COURSE+'='+encodeURIComponent(COURSE_NAME)+'&'+FIELD_SCORE+'='+encodeURIComponent(pct+'%')+'&'+FIELD_HASH+'='+encodeURIComponent(hash);
+  window.open(url,'_blank');
+}
+
+function toggleAck(){ackChecked=document.getElementById('ackCheck').checked;var b=document.getElementById('submitBtn');if(b) b.disabled=!ackChecked;}
+
+function renderDone(){
+  var pct=Math.round((correct/qs.length)*100);var passed=pct>=80;
+  var now=new Date();var ds=now.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var html='<div class="done-wrap">';
+  if(passed){
+    html+='<div class="done-icon">&#x1f6e1;</div>';
+    html+='<h2>Congratulations, '+userName+'!</h2>';
+    html+='<p>You have successfully completed Privacy & Data Protection / INFOSEC-101 training. Please read and accept the acknowledgement below, then submit your completion record.</p>';
+  } else {
+    html+='<div class="done-icon">&#x1f4cb;</div>';
+    html+='<h2>Review Recommended</h2>';
+    html+='<p>'+userName+', you scored below the 80% passing threshold. Review the content sections and retake the quiz when ready.</p>';
+  }
+  html+='<div class="score '+(passed?'pass':'fail')+'">'+pct+'%</div>';
+  html+='<p style="font-family:var(--mono);font-size:11px;color:var(--dim)">'+correct+' / '+qs.length+' CORRECT</p>';
+  if(passed){
+    var hash=genHash(userName+ds+pct+correct);
+    html+='<div class="ack-box"><div class="ack-lbl">Required Acknowledgement</div>';
+    html+='<label><input type="checkbox" id="ackCheck" onchange="toggleAck()"/>';
+    html+='<span>I hereby acknowledge that I am aware of xAI\'s Security and Privacy Policy (go/secprivpolicy) as well as all other policies and processes described in this training, have access to them, have read, and understand the requirements. I hereby confirm that: I will comply with the SPP as well as policies and processes described in this training; I understand that this includes complying with all confidentiality obligations set forth in the SPP; and I am aware of how to seek guidance and report violations.</span>';
+    html+='</label></div>';
+    html+='<div class="cert" style="margin-top:16px"><div class="cert-lbl">PDP / INFOSEC-101 Completion Record</div>';
+    html+='<div class="cert-row">Name: <span>'+userName+'</span></div>';
+    html+='<div class="cert-row">Course: <span>Privacy & Data Protection / INFOSEC-101</span></div>';
+    html+='<div class="cert-row">Framework: <span>FTC Consent Order / Privacy by Design</span></div>';
+    html+='<div class="cert-row">Score: <span>'+pct+'% ('+correct+'/'+qs.length+')</span></div>';
+    html+='<div class="cert-row">Date: <span>'+ds+'</span></div>';
+    html+='<div class="cert-row">Completion ID: <span style="color:var(--accent);letter-spacing:.08em">'+hash+'</span></div>';
+    html+='<div class="cert-row">Acknowledgement: <span style="color:var(--green)">Accepted</span></div>';
+    html+='</div>';
+    html+='<br/><button class="btn btn-p" id="submitBtn" disabled onclick="submitCompletion(\''+hash+'\','+pct+',\''+ds+'\')">Submit Completion Record</button>&nbsp;&nbsp;';
+  }
+  html+='<br/><br/><button class="btn '+(passed?'btn-g':'btn-p')+'" onclick="restart()">Retake</button>';
+  html+='</div>';
+  return html;
+}
+
+function render(){
+  var s=steps[step];var html='';
+  if(s.type==='reg') html=renderReg();
+  else if(s.type==='c') html=renderContent(s.id);
+  else if(s.type==='q') html=renderQuiz(s.id);
+  else html=renderDone();
+  document.getElementById('root').innerHTML=html;
+  updateProg();
+}
+function restart(){step=0;answers={};correct=0;ackChecked=false;render();window.scrollTo(0,0);}
+render();
+</script>
+</body>
+</html>
