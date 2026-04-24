@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Literacy Training and Awareness | AT-2 (4)(5)(6) | IL5 / FedRAMP High</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0e14;--surface:#111722;--surface2:#1a2233;--border:#1f2d47;--accent:#00d4ff;--accent2:#ff6b35;--green:#00ff9f;--red:#ff4757;--yellow:#ffd32a;--text:#c8d8f0;--dim:#5a7aa0;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px;position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.badge{font-family:var(--mono);font-size:9px;letter-spacing:.1em;padding:3px 7px;border:1px solid}
+.badge-blue{color:var(--accent);border-color:var(--accent)}
+.badge-yellow{color:var(--yellow);border-color:var(--yellow)}
+.badge-red{color:var(--red);border-color:var(--red)}
+.hdr-title{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.prog-wrap{display:flex;align-items:center;gap:8px}
+.prog-label{font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap}
+.prog-outer{width:80px;height:3px;background:var(--border)}
+.prog-inner{height:100%;background:var(--accent);box-shadow:0 0 6px var(--accent);transition:width .4s}
+.main{max-width:720px;margin:0 auto;padding:28px 16px 80px}
+.meta-bar{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.08em;padding:10px 14px;border:1px solid var(--border);background:var(--surface);margin-bottom:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.meta-bar span{color:var(--text)}
+.sec-num{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;margin-bottom:6px}
+.sec-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.2}
+.sec-desc{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:24px}
+.card{background:var(--surface);border:1px solid var(--border);padding:20px 20px 20px 24px;margin-bottom:14px;position:relative}
+.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent)}
+.card.warn::before{background:var(--yellow)}
+.card.danger::before{background:var(--red)}
+.card.ok::before{background:var(--green)}
+.card-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.card.warn .card-lbl{color:var(--yellow)}.card.danger .card-lbl{color:var(--red)}.card.ok .card-lbl{color:var(--green)}
+.card h3{font-size:14px;font-weight:600;color:#fff;margin-bottom:8px}
+.card p,.card li{font-size:13px;color:var(--text);line-height:1.65}
+.card ul{list-style:none;padding:0}
+.card ul li{padding:4px 0 4px 14px;position:relative}
+.card ul li::before{content:'>';position:absolute;left:0;color:var(--accent);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+th{text-align:left;font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--dim);padding:6px 10px;border-bottom:1px solid var(--border);text-transform:uppercase}
+td{padding:8px 10px;border-bottom:1px solid rgba(31,45,71,.5);color:var(--text);vertical-align:top;font-size:12px}
+tr:last-child td{border:none}
+.tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 5px;letter-spacing:.04em}
+.t-blue{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.3)}
+.t-red{background:rgba(255,71,87,.1);color:var(--red);border:1px solid rgba(255,71,87,.3)}
+.t-yel{background:rgba(255,211,42,.1);color:var(--yellow);border:1px solid rgba(255,211,42,.3)}
+.quiz-box{background:var(--surface);border:1px solid var(--border);padding:24px 20px;position:relative}
+.quiz-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.q-counter{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:12px}
+.q-text{font-size:15px;font-weight:600;color:#fff;line-height:1.5;margin-bottom:20px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;cursor:pointer;display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text);text-align:left;width:100%;transition:border-color .15s}
+.opt:hover{border-color:var(--accent);color:#fff}
+.opt.correct{border-color:var(--green);background:rgba(0,255,159,.05);color:var(--green)}
+.opt.wrong{border-color:var(--red);background:rgba(255,71,87,.05);color:var(--red)}
+.opt.off{cursor:default;pointer-events:none}
+.opt-letter{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);min-width:16px;padding-top:1px}
+.opt.correct .opt-letter{color:var(--green)}.opt.wrong .opt-letter{color:var(--red)}
+.feedback{margin-top:16px;padding:13px 14px;border-left:3px solid var(--green);font-size:13px;color:var(--text);line-height:1.6;display:none}
+.feedback.show{display:block}.feedback.bad{border-color:var(--red)}
+.feedback strong{color:#fff}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:28px}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border)}
+.dot.active{background:var(--accent);box-shadow:0 0 5px var(--accent)}
+.dot.done{background:var(--green)}
+.btn{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:10px 20px;border:1px solid;cursor:pointer;background:transparent;transition:all .15s}
+.btn-p{border-color:var(--accent);color:var(--accent)}
+.btn-p:hover{background:var(--accent);color:var(--bg)}
+.btn-p:disabled{opacity:.3;cursor:default;pointer-events:none}
+.btn-g{border-color:var(--border);color:var(--dim)}
+.btn-g:hover{border-color:var(--dim);color:var(--text)}
+.done-wrap{text-align:center;padding:48px 0}
+.done-icon{font-size:44px;margin-bottom:16px}
+.done-wrap h2{font-size:24px;font-weight:700;color:#fff;margin-bottom:8px}
+.done-wrap p{font-size:13px;color:var(--dim);max-width:440px;margin:0 auto 24px;line-height:1.6}
+.score{font-family:var(--mono);font-size:44px;font-weight:600;text-shadow:0 0 24px rgba(0,255,159,.4);margin:16px 0 4px}
+.score.pass{color:var(--green)}
+.score.fail{color:var(--red);text-shadow:0 0 24px rgba(255,71,87,.4)}
+.cert{border:1px solid var(--border);background:var(--surface);padding:20px 24px;display:inline-block;text-align:left;margin-top:20px;max-width:440px;width:100%}
+.cert-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--accent);margin-bottom:12px;text-transform:uppercase}
+.cert-row{font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:4px}
+.cert-row span{color:var(--text)}
+.reg-box{background:var(--surface);border:1px solid var(--border);padding:32px 28px;max-width:420px;margin:0 auto}
+.reg-box label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+.reg-box input{width:100%;background:var(--surface2);border:1px solid var(--border);color:#fff;font-family:var(--sans);font-size:14px;padding:10px 12px;margin-bottom:20px;outline:none;transition:border-color .15s}
+.reg-box input:focus{border-color:var(--accent)}
+.reg-box input[readonly]{color:var(--dim);cursor:default}
+.callout{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--text)}
+.callout strong{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <div class="badges">
+    <div class="badge badge-blue">IL5 / FEDRAMP HIGH</div>
+    <div class="badge badge-red">AT-2 (4)(5)(6)</div>
+    <div class="badge badge-yellow">FOR OFFICIAL USE ONLY</div>
+    <div class="hdr-title">Literacy Training and Awareness</div>
+  </div>
+  <div class="prog-wrap">
+    <span class="prog-label" id="plbl">0/0</span>
+    <div class="prog-outer"><div class="prog-inner" id="pbar" style="width:0%"></div></div>
+  </div>
+</header>
+
+<div class="main" id="root"></div>
+
+<script>
+var FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSdHsEWs-iPTGncIBdIiFGaEnxl6MXMN6IHFnUVDGyG1Trf4fw/viewform';
+var FIELD_NAME='entry.1084561241',FIELD_DATE='entry.989191631',FIELD_COURSE='entry.1455054579',FIELD_SCORE='entry.766034301',FIELD_HASH='entry.1157983501';
+var COURSE_NAME='Security & Privacy Literacy Training and Awareness (AT-2/4/5/6)';
+
+var MATERIAL_VERSION='1.0';
+var MATERIAL_LAST_UPDATED='November 2025';
+var MATERIAL_NEXT_REVIEW='November 2026';
+
+var step=0,answers={},correct=0,userName='';
+
+var steps=[
+  {type:'reg'},
+  {type:'c',id:'intro'},
+  {type:'c',id:'cyberenv'},
+  {type:'c',id:'suscomms'},
+  {type:'c',id:'apt'},
+  {type:'c',id:'controls'},
+  {type:'q',id:0},
+  {type:'q',id:1},
+  {type:'q',id:2},
+  {type:'q',id:3},
+  {type:'q',id:4},
+  {type:'q',id:5},
+  {type:'q',id:6},
+  {type:'q',id:7},
+  {type:'done'}
+];
+
+var qs=[
+  {q:'Under NIST SP 800-53 Rev 5, control AT-2 requires that security and privacy literacy training be provided to system users:',
+   opts:['Once at the time of hire only.','As part of initial training for new users, when required by system changes, and at least annually thereafter.','Only to users who handle classified information.','At the discretion of each individual\'s supervisor.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> AT-2 requires literacy training (1) as part of initial training for new users, (2) when required by system changes, and (3) annually thereafter. FedRAMP High additionally requires the training to cover suspicious communications and anomalous system behavior (AT-2(4)), advanced persistent threat (AT-2(5)), and the cyber threat environment (AT-2(6)).'},
+  {q:'You receive an email that appears to be from your CIO asking you to urgently purchase gift cards and send the codes back via reply. The sender domain looks slightly off (e.g., "@org-cio.com" instead of your normal corporate domain). What is the CORRECT response?',
+   opts:['Reply asking the CIO to confirm the request before acting.','Forward the email to a coworker for a second opinion.','Do not reply, do not click links, do not forward. Report it through the official phishing reporting channel (e.g., the "Report Phishing" button or the security mailbox), then delete it.','Purchase the gift cards since the request appears to come from senior leadership.'],
+   ans:2,
+   fb:'<strong>Correct.</strong> This is a classic Business Email Compromise (BEC) attempt combining executive impersonation, urgency, financial request, and a lookalike domain -- all hallmarks of suspicious communications under AT-2(4). Never reply, click, or forward to coworkers (which can spread the attack). Use the official reporting channel only. Replying confirms your address is active and invites further targeting.'},
+  {q:'Which of the following are recognized indicators of ANOMALOUS system behavior that should be reported under AT-2(4)?',
+   opts:['Your laptop fan is running louder than usual once during a video call.','Unexpected MFA prompts you did not initiate, unfamiliar processes consuming significant resources, unexplained outbound network connections, files being modified or encrypted you did not touch, or sudden disabling of security tools.','You forgot your password and had to reset it.','A coworker\'s out-of-office reply was longer than expected.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> Unsolicited MFA prompts (a key sign of MFA fatigue / push-bombing attacks), unknown processes, unexpected outbound traffic, unauthorized file modification, and disabled security tooling are all anomalous indicators that may signal active compromise. Report these immediately to the ISSO/SOC -- do not investigate on your own or shut down the device unless directed, as this can destroy forensic evidence.'},
+  {q:'Advanced Persistent Threat (APT) actors are BEST characterized by which of the following?',
+   opts:['Opportunistic individuals seeking quick financial gain through ransomware-as-a-service.','Highly-resourced (often nation-state) adversaries who establish long-term, stealthy access to specific targets, using a kill chain of reconnaissance, initial access, persistence, lateral movement, privilege escalation, and exfiltration.','Automated bots that scan the entire internet for vulnerable services.','Insiders who accidentally cause data loss through misconfiguration.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> APT groups (e.g., APT28, APT29, APT40, APT41, Volt Typhoon, Salt Typhoon) are typically nation-state-sponsored, well-resourced, patient, and target-specific. They prioritize long-dwell stealth over noise. The MITRE ATT&CK framework documents their tactics, techniques, and procedures (TTPs). DoD and federal cloud environments are explicit, named targets of APT operations.'},
+  {q:'Which of the following BEST reflects the current cyber threat environment for FedRAMP High and DoD IL5 systems (per AT-2(6))?',
+   opts:['Cyber threats have decreased significantly due to improved automated defenses.','The primary threat is still email-borne malware from individual hobbyist hackers.','Federal cloud and defense systems face active, persistent targeting by nation-state actors, ransomware-as-a-service operators, supply-chain compromise, identity-focused attacks (MFA fatigue, token theft, OAuth abuse), and AI-enabled social engineering at scale.','Cyber risk is fully transferred to cloud service providers under the shared responsibility model.'],
+   ans:2,
+   fb:'<strong>Correct.</strong> The current threat environment is characterized by sustained nation-state targeting (PRC, Russia, Iran, DPRK), ransomware affiliates targeting critical infrastructure, supply-chain attacks (SolarWinds, MOVEit, XZ Utils), identity-centric attacks (MFA fatigue, AiTM proxies, OAuth consent grants, primary refresh token theft), and increasingly convincing AI-generated phishing and deepfake voice/video. Shared responsibility shifts SOME controls to the CSP but does not transfer your customer-side risk.'},
+  {q:'You are working from home and receive a phone call from someone claiming to be from "IT Help Desk" who says they need your password to push an urgent security patch. They sound professional and know your name and department. What do you do?',
+   opts:['Provide the password since they already have your name and department information.','Hang up. Do not provide credentials. Verify by contacting the IT Help Desk through a known internal number/portal, and report the call as a suspected vishing attempt to your security team.','Ask them to call back after you finish your meeting.','Provide the password but only after they verify their employee ID.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> This is voice phishing (vishing) -- a recognized form of social engineering and a key AT-2(4) indicator. Legitimate IT staff will NEVER ask for your password. Knowing your name and department is trivial (LinkedIn, public directories, prior breaches). Always hang up and call back through a verified channel. Report the attempt; vishing campaigns typically target multiple employees in the same org.'},
+  {q:'A common APT initial-access technique observed against federal cloud environments is to compromise a legitimate user identity, then create new OAuth application consent grants or new federation/trust relationships to maintain persistent access -- often invisible to traditional endpoint tools. What is the BEST personal defense?',
+   opts:['Disable MFA so you do not get phishing-fatigued by constant prompts.','Use phishing-resistant MFA (FIDO2/WebAuthn or PIV/CAC), never approve unsolicited MFA prompts, review and report any unfamiliar OAuth consents or sign-in alerts, and immediately notify the ISSO of any unexpected authentication activity.','Reuse the same strong password across systems so it is easier to remember.','Click any "Was this you?" sign-in alert email to dismiss it quickly.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> Phishing-resistant MFA (FIDO2 security keys, PIV/CAC, platform passkeys) defeats AiTM proxies and push-bombing. Never approve an MFA prompt you did not initiate. Treat every unexpected sign-in alert and OAuth consent as a potential compromise indicator and report it. APT operators specifically target identity infrastructure because once they own an identity, they bypass network controls.'},
+  {q:'Which of the following must you report immediately to the ISSO/SOC, even if you are unsure whether it is a real incident?',
+   opts:['Only confirmed data breaches involving classified information.','Suspected phishing/vishing/smishing attempts, unsolicited MFA prompts, lost or stolen government-furnished equipment, suspected malware infection, anomalous account activity, accidental disclosure of CUI, suspected insider threat indicators, and any anomalous system behavior.','Only events that have already caused operational impact.','Nothing -- the SOC will detect everything automatically.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> Under-reporting is the single biggest contributor to APT dwell time. You are the human sensor; your obligation is to report suspected events, not to confirm them. The SOC and ISSO are responsible for triage. Late reporting of a CUI spill, lost device, or successful phishing can convert a minor event into a major incident with regulatory and contractual consequences (DFARS 252.204-7012 requires DoD incident reporting within 72 hours of discovery).'}
+];
+
+function dots(){return steps.filter(function(s){return s.type!=='done'&&s.type!=='reg';}).map(function(s,i){var c='dot';var idx=i+1;if(idx<step)c+=' done';else if(idx===step)c+=' active';return '<div class="'+c+'"></div>';}).join('');}
+
+function nextStep(){if(step<steps.length-1){step++;render();window.scrollTo(0,0);}}
+
+function updateProg(){var total=steps.filter(function(s){return s.type!=='done'&&s.type!=='reg';}).length;var cur=Math.max(0,step-1);var pct=Math.round((cur/total)*100);document.getElementById('pbar').style.width=pct+'%';document.getElementById('plbl').textContent=cur+'/'+total;}
+
+function answerQ(qi,chosen){if(answers[qi]!==undefined)return;answers[qi]=chosen;if(chosen===qs[qi].ans)correct++;render();}
+
+function card(type,label,heading,bodyOrItems){var cls='card'+(type==='warn'?' warn':type==='danger'?' danger':type==='ok'?' ok':'');var body='';if(typeof bodyOrItems==='string'){body='<p>'+bodyOrItems+'</p>';}else{body='<ul>'+bodyOrItems.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>';}return '<div class="'+cls+'"><div class="card-lbl">'+label+'</div><h3>'+heading+'</h3>'+body+'</div>';}
+
+function metaBar(){return '<div class="meta-bar"><span>MATERIAL VERSION: <span>'+MATERIAL_VERSION+'</span></span><span>LAST UPDATED: <span>'+MATERIAL_LAST_UPDATED+'</span></span><span>NEXT REVIEW: <span>'+MATERIAL_NEXT_REVIEW+'</span></span></div>';}
+
+function genHash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h)+s.charCodeAt(i);return'XAI-LIT-'+('000000'+Math.abs(h).toString(16).toUpperCase()).slice(-6)}
+
+function submitCompletion(hash,pct,ds){window.open(FORM_URL+'?usp=pp_url&'+FIELD_NAME+'='+encodeURIComponent(userName)+'&'+FIELD_DATE+'='+encodeURIComponent(ds)+'&'+FIELD_COURSE+'='+encodeURIComponent(COURSE_NAME)+'&'+FIELD_SCORE+'='+encodeURIComponent(pct+'%')+'&'+FIELD_HASH+'='+encodeURIComponent(hash),'_blank')}
+
+function renderReg(){
+  var ds=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  return '<div class="sec-num">REGISTRATION</div>'+
+    '<div class="sec-title">Security &amp; Privacy Literacy Training and Awareness</div>'+
+    '<div class="sec-desc">AT-2 with enhancements (4) Suspicious Communications &amp; Anomalous Behavior, (5) Advanced Persistent Threat, (6) Cyber Threat Environment | Estimated Duration: 30 Minutes | 80% passing score required</div>'+
+    '<div class="reg-box">'+
+    '<label>Full Name</label>'+
+    '<input type="text" id="regName" placeholder="e.g. Jane Doe" value="'+userName+'" autocomplete="name"/>'+
+    '<label>Date</label>'+
+    '<input type="text" value="'+ds+'" readonly/>'+
+    '<button class="btn btn-p" style="width:100%" onclick="startTraining()">Begin Training --></button>'+
+    '</div>';
+}
+
+function startTraining(){
+  var n=document.getElementById('regName').value.trim();
+  if(!n){document.getElementById('regName').style.borderColor='var(--red)';return;}
+  userName=n;
+  nextStep();
+}
+
+function renderContent(id){
+  var html='';
+  if(id==='intro'){
+    html+=metaBar();
+    html+='<div class="sec-num">01 -- OVERVIEW</div>';
+    html+='<div class="sec-title">Security &amp; Privacy Literacy Training and Awareness</div>';
+    html+='<div class="sec-desc">This training fulfills NIST SP 800-53 Rev 5 control AT-2 and its FedRAMP High enhancements: AT-2(4) Suspicious Communications and Anomalous System Behavior, AT-2(5) Advanced Persistent Threat, and AT-2(6) Cyber Threat Environment. It is required for ALL personnel with access to organizational systems, prior to access and annually thereafter.</div>';
+    html+=card('','Who Must Complete This','Required for All System Users','AT-2 applies to every user of organizational systems -- federal employees, contractors, vendors, and any third party with system access. This includes administrators, developers, analysts, support staff, and executives. Completion is required (1) before initial system access is granted, (2) when significant system or threat-environment changes occur, and (3) at least annually thereafter.');
+    html+=card('warn','Why Literacy Training Matters','You Are the First Line of Defense','Technical controls stop most automated attacks, but the most damaging incidents -- credential theft, business email compromise, ransomware, nation-state intrusions -- typically begin with a human action: a clicked link, an approved MFA prompt, a credential reused, an attachment opened. Your awareness and reporting behavior is a documented security control, not a "nice to have."');
+    html+=card('danger','What Is Covered','Required Topic Areas',['AT-2(6) Cyber Threat Environment -- current adversaries, motivations, and attack trends','AT-2(4) Suspicious Communications -- phishing, vishing, smishing, BEC, social engineering','AT-2(4) Anomalous System Behavior -- indicators of compromise you may notice','AT-2(5) Advanced Persistent Threat -- nation-state TTPs and detection indicators','Privacy awareness -- PII / CUI handling, breach reporting, data minimization','Incident reporting obligations -- when, how, and to whom you must report']);
+    html+=card('ok','Your Reporting Obligations','Know Where to Report Before You Need It',['Suspected phishing -- use the "Report Phishing" button in your email client or send to the security mailbox','Suspected security incident -- contact the ISSO / SOC through the documented incident hotline','Lost / stolen GFE -- report immediately to your supervisor and the ISSO','Suspected CUI spill -- stop, do not delete or forward; contact the ISSO immediately','Suspected insider threat -- report through the Insider Threat Program channel','Privacy incident -- report to the Privacy Officer within the documented timeframe']);
+  } else if(id==='cyberenv'){
+    html+='<div class="sec-num">02 -- AT-2(6) CYBER THREAT ENVIRONMENT</div>';
+    html+='<div class="sec-title">The Threat Landscape You Operate In</div>';
+    html+='<div class="sec-desc">Federal cloud and DoD IL5 systems operate in one of the most actively-targeted threat environments in the world. Understanding who is attacking and why is foundational to recognizing and reporting threats.</div>';
+    html+=card('','Who Targets Federal &amp; DoD Systems','Threat Actor Categories',['Nation-state actors -- PRC (Volt Typhoon, Salt Typhoon, APT40/41), Russia (APT28/29, Sandworm), Iran (APT33/34/35), DPRK (Lazarus, Kimsuky)','Ransomware-as-a-Service operators targeting critical infrastructure and federal supply chain','Hacktivists with political or ideological motivations','Insider threats -- malicious, negligent, or compromised employees and contractors','Supply chain adversaries compromising upstream vendors to reach federal targets']);
+    html+=card('warn','What They Are After','Adversary Objectives',['Controlled Unclassified Information (CUI) and Controlled Defense Information (CDI)','Personally Identifiable Information (PII) and personnel records','Credentials, federation tokens, and identity provider configurations','Source code, build pipelines, and signing keys (supply chain leverage)','Operational disruption of mission-critical systems via ransomware or wipers','Long-term, stealthy access for intelligence collection']);
+    html+=card('danger','Current Trends and Techniques','What We Are Seeing in 2024-2025',['Identity-centric attacks: MFA fatigue / push-bombing, AiTM (adversary-in-the-middle) proxies that defeat traditional MFA, OAuth consent phishing, primary refresh token theft, federation trust abuse','Living-off-the-land techniques: adversaries use built-in admin tools (PowerShell, WMI, certutil) to avoid endpoint detection','Supply-chain compromise: SolarWinds, 3CX, MOVEit, XZ Utils -- trusted software used as the initial access vector','Ransomware data-extortion: exfiltrate first, encrypt second; pay-or-publish leak sites','AI-enabled social engineering: deepfake voice / video impersonation of executives, hyper-personalized phishing at scale','Cloud and SaaS targeting: misconfigured storage, exposed secrets in public repos, abused API keys, compromised CI/CD pipelines']);
+    html+=card('ok','What This Means for You','Practical Implications',['Assume you are a target. DoD and federal users are explicitly named in nation-state targeting','Identity is the new perimeter. Protecting your credentials and MFA is mission-critical','Trust nothing automatically -- verify unusual requests through a second channel','Report anomalies early; APT operations rely on long, undetected dwell time','Keep awareness current; the threat landscape changes faster than annual training cycles']);
+  } else if(id==='suscomms'){
+    html+='<div class="sec-num">03 -- AT-2(4) SUSPICIOUS COMMUNICATIONS &amp; ANOMALOUS BEHAVIOR</div>';
+    html+='<div class="sec-title">Recognizing Threats Aimed at You</div>';
+    html+='<div class="sec-desc">The majority of successful intrusions begin with a suspicious communication or an anomalous system behavior that someone failed to recognize or report. This section trains you to spot and report both.</div>';
+    html+=card('','Suspicious Communications','Forms You Will Encounter',['Phishing -- email-based attempts to harvest credentials, deliver malware, or trick you into action','Spear phishing -- highly targeted, often referencing your role, projects, or colleagues','Whaling / executive impersonation -- pretending to be a senior leader to authorize urgent action','Business Email Compromise (BEC) -- wire transfer / gift card / invoice fraud via spoofed or compromised accounts','Vishing -- voice phishing via phone calls, often impersonating IT, HR, or vendors','Smishing -- SMS / text-message phishing, often with shortened links or "delivery" lures','QR-code phishing (quishing) -- malicious QR codes in email, on signs, or in documents']);
+    html+=card('warn','Red Flags in Any Communication','Check Before You Click',['Unexpected sender -- even if the display name looks familiar, hover or expand to see the actual address','Lookalike domain -- "rnicrosoft.com" vs "microsoft.com", or external "@org-cio.com" instead of your real domain','Urgency or pressure -- "respond in the next 30 minutes", "do not tell anyone"','Authority + secrecy -- a senior leader asks you to bypass normal process','Generic greeting on a supposedly personal email -- "Dear User", "Dear Customer"','Mismatched or shortened links -- hover to preview; never trust the visible text','Unsolicited attachments -- especially .zip, .iso, .htm, .lnk, .one, .pdf with embedded scripts','Requests for credentials, MFA codes, gift cards, or wire transfers']);
+    html+=card('danger','Anomalous System Behavior','Indicators of Possible Compromise',['Unsolicited MFA prompts you did not initiate (push-bombing / MFA fatigue attack)','Sign-in alerts from unfamiliar locations, devices, or applications','Unfamiliar OAuth application consents granted to your account','Files renamed, modified, encrypted, or deleted that you did not touch','Unfamiliar processes consuming high CPU, memory, or network bandwidth','Unexpected outbound network connections (especially to unusual countries)','Endpoint security agent (Defender, EDR) disabled, paused, or showing errors','New scheduled tasks, services, or startup entries you did not create','Browser homepage, extensions, or default search engine changed without your action','System slowdown, repeated unexplained reboots, or fans running at full speed when idle']);
+    html+=card('ok','How to Report','Action Workflow',['For suspected phishing: use the in-client "Report Phishing" button -- do NOT forward to coworkers','For unsolicited MFA prompt: deny / report through the authenticator, then notify ISSO immediately','For anomalous endpoint behavior: do NOT shut down the device (preserves forensic evidence) -- contact the SOC and follow their direction','For lost / stolen GFE: notify your supervisor and ISSO immediately; the device can be remote-wiped','For accidental CUI disclosure: do NOT delete the message; contact the ISSO and Privacy Officer','When in doubt -- report. Triage is the SOC\'s job, not yours.']);
+  } else if(id==='apt'){
+    html+='<div class="sec-num">04 -- AT-2(5) ADVANCED PERSISTENT THREAT</div>';
+    html+='<div class="sec-title">How Sophisticated Adversaries Operate</div>';
+    html+='<div class="sec-desc">Advanced Persistent Threat (APT) refers to highly-resourced adversaries -- typically nation-state-sponsored -- who establish long-term, stealthy access to specific targets. DoD and federal cloud systems are explicit, named APT targets.</div>';
+    html+=card('','What Makes APT Different','Defining Characteristics',['Targeted -- specific organizations, missions, or individuals are selected in advance','Resourced -- nation-state funding, full-time staff, custom malware, zero-day capability','Patient -- dwell time is often measured in months or years, not days','Stealthy -- prioritize evading detection over speed or noise','Adaptive -- shift TTPs in response to defenses; will return through alternate paths if evicted','Mission-driven -- intelligence collection, IP theft, pre-positioning for disruption, influence operations']);
+    html+=card('warn','APT Kill Chain','Typical Operational Phases',['Reconnaissance -- collect open-source intelligence about the target, employees, suppliers, and tech stack','Initial Access -- spear-phishing, exploitation of public-facing apps, supply-chain compromise, valid stolen credentials','Execution -- run malicious code, often using built-in tools to blend in','Persistence -- create backdoor accounts, scheduled tasks, OAuth consents, federation trusts','Privilege Escalation -- abuse local or cloud IAM misconfigurations to gain admin rights','Defense Evasion -- disable logging / EDR, clear traces, rename tools','Credential Access -- dump credentials, steal tokens, compromise identity providers','Lateral Movement -- pivot through the network using stolen credentials or trust relationships','Collection -- stage data of interest in archives or cloud storage','Exfiltration -- move data out via DNS tunneling, cloud storage, encrypted channels','Impact (sometimes) -- destruction, ransomware, or pre-positioning for future disruption']);
+    html+=card('danger','Notable APT Groups Targeting Federal Systems','Reference (MITRE ATT&CK)',['PRC: Volt Typhoon (critical infrastructure pre-positioning), Salt Typhoon (telecom), APT40 (maritime / R&D), APT41 (dual-use criminal/state)','Russia: APT28 / Fancy Bear (military, political), APT29 / Cozy Bear (intelligence collection, SolarWinds), Sandworm (destructive operations)','Iran: APT33 (aerospace), APT34 / OilRig (regional intelligence), APT35 / Charming Kitten (academic, journalists)','DPRK: Lazarus (financial theft funding the regime), Kimsuky (intelligence collection)']);
+    html+=card('ok','How Users Help Defend Against APT','Your Role',['Use phishing-resistant MFA (FIDO2 / PIV / CAC); never approve unsolicited prompts','Practice good credential hygiene -- unique passwords, password manager, no reuse','Be skeptical of any unsolicited contact, even from known names -- verify through a second channel','Report anomalies early; APT detection often starts with a single user noticing "something off"','Keep systems patched; APT operators routinely weaponize known vulnerabilities within days of disclosure','Treat every CUI / sensitive-data access as if it is being observed -- because it might be']);
+  } else if(id==='controls'){
+    html+='<div class="sec-num">05 -- NIST CONTROL MAPPINGS</div>';
+    html+='<div class="sec-title">Controls This Training Satisfies</div>';
+    html+='<div class="sec-desc">NIST SP 800-53 Rev 5 controls and FedRAMP High enhancements directly addressed by this material.</div>';
+    var rows=[
+      ['AT-2','Literacy Training and Awareness','P1','Provide literacy training to system users as part of initial training, when required by changes, and annually thereafter.'],
+      ['AT-2(2)','Insider Threat','P1','Training that addresses recognition and reporting of potential indicators of insider threat.'],
+      ['AT-2(3)','Social Engineering and Mining','P2','Training on recognizing and responding to social engineering and social mining attempts.'],
+      ['AT-2(4)','Suspicious Comms &amp; Anomalous Behavior','P1','Training on recognition and reporting of suspicious communications and anomalous system behavior.'],
+      ['AT-2(5)','Advanced Persistent Threat','P1','Training that includes content addressing advanced persistent threat indicators and TTPs.'],
+      ['AT-2(6)','Cyber Threat Environment','P1','Training on the current cyber threat environment relevant to the organization\'s mission.'],
+      ['AT-4','Training Records','P2','Document and retain training records; this training generates an individual completion record.'],
+      ['IR-6','Incident Reporting','P1','Personnel are trained on their obligation to report suspected incidents within defined timeframes.'],
+      ['PM-12','Insider Threat Program','P1','Workforce awareness of insider-threat indicators and reporting channels.'],
+      ['PT-2','Authority to Process PII','P1','Privacy literacy element: handling, transmission, and disclosure of PII.']
+    ];
+    html+='<div class="card" style="padding:0;overflow:auto"><table><thead><tr><th>Control</th><th>Name</th><th>Pri</th><th>Summary</th></tr></thead><tbody>';
+    rows.forEach(function(r){html+='<tr><td><span class="tag t-blue">'+r[0]+'</span></td><td style="color:#fff;font-weight:600">'+r[1]+'</td><td><span class="tag '+(r[2]==='P1'?'t-red':'t-yel')+'">'+r[2]+'</span></td><td>'+r[3]+'</td></tr>';});
+    html+='</tbody></table></div>';
+    html+='<div class="callout">Material version <strong>'+MATERIAL_VERSION+'</strong> -- last updated <strong>'+MATERIAL_LAST_UPDATED+'</strong> -- next scheduled review <strong>'+MATERIAL_NEXT_REVIEW+'</strong>. This material is reviewed at minimum annually and whenever significant changes occur in the threat environment, organizational systems, or applicable regulations.</div>';
+  }
+  html+='<div class="nav"><div class="dots">'+dots()+'</div><button class="btn btn-p" onclick="nextStep()">'+(id==='controls'?'Start Quiz -->':'Continue -->')+'</button></div>';
+  return html;
+}
+
+function renderQuiz(qi){
+  var q=qs[qi];var answered=answers[qi]!==undefined;var html='';
+  html+='<div class="sec-num">KNOWLEDGE CHECK</div><div class="sec-title">Quiz</div><div class="quiz-box">';
+  html+='<div class="q-counter">QUESTION '+(qi+1)+' / '+qs.length+'</div>';
+  html+='<div class="q-text">'+q.q+'</div><div class="options">';
+  var letters=['A','B','C','D'];
+  q.opts.forEach(function(o,i){var cls='opt';if(answered){cls+=' off';if(i===q.ans)cls+=' correct';else if(i===answers[qi])cls+=' wrong';}html+='<button class="'+cls+'" onclick="answerQ('+qi+','+i+')"><span class="opt-letter">'+letters[i]+'</span><span>'+o+'</span></button>';});
+  html+='</div>';
+  var isCorrect=answered&&answers[qi]===q.ans;
+  html+='<div class="feedback'+(answered?' show':'')+(answered&&!isCorrect?' bad':'')+'">'+(answered?(isCorrect?'+ ':'x ')+q.fb:'')+'</div></div>';
+  var isLast=qi===qs.length-1;
+  html+='<div class="nav"><div class="dots">'+dots()+'</div><button class="btn btn-p" '+(answered?'':'disabled')+' onclick="nextStep()">'+(isLast?'Finish -->':'Next -->')+'</button></div>';
+  return html;
+}
+
+function renderDone(){
+  var pct=Math.round((correct/qs.length)*100);
+  var passed=pct>=80;
+  var ds=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var html='<div class="done-wrap">';
+  var hash='';
+  if(passed){
+    hash=genHash(userName+ds+pct+correct);
+    html+='<div class="done-icon">&#x1f6e1;</div><h2>Congratulations, '+userName+'!</h2>';
+    html+='<p>You have successfully completed Security &amp; Privacy Literacy Training and Awareness (AT-2 with enhancements (4)/(5)/(6)) for IL5 / FedRAMP High environments. This record should be retained as evidence for ConMon and 3PAO assessments.</p>';
+  } else {
+    html+='<div class="done-icon">&#x1f4cb;</div><h2>Review Recommended</h2>';
+    html+='<p>'+userName+', you scored below the 80% passing threshold. Review the content sections and retake the quiz when ready.</p>';
+  }
+  html+='<div class="score '+(passed?'pass':'fail')+'">'+pct+'%</div>';
+  html+='<p style="font-family:var(--mono);font-size:11px;color:var(--dim)">'+correct+' / '+qs.length+' CORRECT</p>';
+  if(passed){
+    html+='<div class="cert"><div class="cert-lbl">AT-2 Training Completion Record</div>';
+    html+='<div class="cert-row">Name: <span>'+userName+'</span></div>';
+    html+='<div class="cert-row">Course: <span>Security &amp; Privacy Literacy Training and Awareness</span></div>';
+    html+='<div class="cert-row">Framework: <span>IL5 / FedRAMP High / NIST 800-53r5</span></div>';
+    html+='<div class="cert-row">Controls: <span>AT-2, AT-2(4), AT-2(5), AT-2(6)</span></div>';
+    html+='<div class="cert-row">Score: <span>'+pct+'% ('+correct+'/'+qs.length+')</span></div>';
+    html+='<div class="cert-row">Completion Date: <span>'+ds+'</span></div>';
+    html+='<div class="cert-row">Completion ID: <span style="color:var(--accent);letter-spacing:.08em">'+hash+'</span></div>';
+    html+='<div class="cert-row">Material Version: <span>'+MATERIAL_VERSION+'</span></div>';
+    html+='<div class="cert-row">Material Last Updated: <span>'+MATERIAL_LAST_UPDATED+'</span></div>';
+    html+='<div class="cert-row">Next Required Refresher: <span>Annually</span></div>';
+    html+='</div>';
+    html+='<br/><button class="btn btn-p" onclick="submitCompletion(\''+hash+'\','+pct+',\''+ds+'\')">Submit Completion Record</button>&nbsp;&nbsp;';
+  }
+  html+='<br/><br/><button class="btn '+(passed?'btn-g':'btn-p')+'" onclick="restart()">Retake</button>';
+  html+='</div>';
+  return html;
+}
+
+function render(){
+  var s=steps[step];var html='';
+  if(s.type==='reg')html=renderReg();
+  else if(s.type==='c')html=renderContent(s.id);
+  else if(s.type==='q')html=renderQuiz(s.id);
+  else html=renderDone();
+  document.getElementById('root').innerHTML=html;
+  updateProg();
+}
+
+function restart(){step=0;answers={};correct=0;userName='';render();window.scrollTo(0,0);}
+
+render();
+</script>
+</body>
+</html>

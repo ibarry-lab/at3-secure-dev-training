@@ -114,10 +114,17 @@ tr:last-child td{border:none}
 <div class="main" id="root"></div>
 
 <script>
+var FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSdHsEWs-iPTGncIBdIiFGaEnxl6MXMN6IHFnUVDGyG1Trf4fw/viewform';
+var FIELD_NAME='entry.1084561241',FIELD_DATE='entry.989191631',FIELD_COURSE='entry.1455054579',FIELD_SCORE='entry.766034301',FIELD_HASH='entry.1157983501';
+var COURSE_NAME='Secure Developer / CI-CD Role-Based Training (AT-3)';
+
 var step = 0;
 var answers = {};
 var correct = 0;
 var userName = '';
+
+function genHash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h)+s.charCodeAt(i);return'XAI-SDC-'+('000000'+Math.abs(h).toString(16).toUpperCase()).slice(-6)}
+function submitCompletion(hash,pct,ds){window.open(FORM_URL+'?usp=pp_url&'+FIELD_NAME+'='+encodeURIComponent(userName)+'&'+FIELD_DATE+'='+encodeURIComponent(ds)+'&'+FIELD_COURSE+'='+encodeURIComponent(COURSE_NAME)+'&'+FIELD_SCORE+'='+encodeURIComponent(pct+'%')+'&'+FIELD_HASH+'='+encodeURIComponent(hash),'_blank')}
 
 var steps = [
   {type:'reg'},
@@ -466,7 +473,9 @@ function renderDone(){
   }
   html+='<div class="score '+(passed?'pass':'fail')+'">'+pct+'%</div>';
   html+='<p style="font-family:var(--mono);font-size:11px;color:var(--dim)">'+correct+' / '+qs.length+' CORRECT</p>';
+  var hash='';
   if(passed){
+    hash=genHash(userName+ds+pct+correct);
     html+='<div class="cert"><div class="cert-lbl">AT-3 Training Completion Record</div>';
     html+='<div class="cert-row">Name: <span>'+userName+'</span></div>';
     html+='<div class="cert-row">Course: <span>Secure Developer / CI-CD Role-Based Training</span></div>';
@@ -474,8 +483,10 @@ function renderDone(){
     html+='<div class="cert-row">Control: <span>AT-3 (Role-Based Training)</span></div>';
     html+='<div class="cert-row">Score: <span>'+pct+'% ('+correct+'/'+qs.length+')</span></div>';
     html+='<div class="cert-row">Date: <span>'+ds+'</span></div>';
+    html+='<div class="cert-row">Completion ID: <span style="color:var(--accent);letter-spacing:.08em">'+hash+'</span></div>';
     html+='<div class="cert-row">Controls Covered: <span>AT-3, SA-10, SA-11, SA-15, CM-3, CM-4, SI-7, SI-10, AC-6, AU-2, SC-13, SR-4</span></div>';
     html+='</div>';
+    html+='<br/><button class="btn btn-p" onclick="submitCompletion(\''+hash+'\','+pct+',\''+ds+'\')">Submit Completion Record</button>&nbsp;&nbsp;';
   }
   html+='<br/><br/><button class="btn '+(passed?'btn-g':'btn-p')+'" onclick="restart()">Retake</button>';
   html+='</div>';
