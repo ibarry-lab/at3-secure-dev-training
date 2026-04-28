@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Phishing Awareness &amp; Prevention Training | IL5 / FedRAMP High</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0e14;--surface:#111722;--surface2:#1a2233;--border:#1f2d47;--accent:#00d4ff;--accent2:#ff6b35;--green:#00ff9f;--red:#ff4757;--yellow:#ffd32a;--text:#c8d8f0;--dim:#5a7aa0;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 16px;position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.badge{font-family:var(--mono);font-size:9px;letter-spacing:.1em;padding:3px 7px;border:1px solid}
+.badge-blue{color:var(--accent);border-color:var(--accent)}
+.badge-yellow{color:var(--yellow);border-color:var(--yellow)}
+.badge-red{color:var(--red);border-color:var(--red)}
+.hdr-title{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.prog-wrap{display:flex;align-items:center;gap:8px}
+.prog-label{font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap}
+.prog-outer{width:80px;height:3px;background:var(--border)}
+.prog-inner{height:100%;background:var(--accent);box-shadow:0 0 6px var(--accent);transition:width .4s}
+.main{max-width:720px;margin:0 auto;padding:28px 16px 80px}
+.sec-num{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.12em;margin-bottom:6px}
+.sec-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.2}
+.sec-desc{font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:24px}
+.card{background:var(--surface);border:1px solid var(--border);padding:20px 20px 20px 24px;margin-bottom:14px;position:relative}
+.card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent)}
+.card.warn::before{background:var(--yellow)}
+.card.danger::before{background:var(--red)}
+.card.ok::before{background:var(--green)}
+.card-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.card.warn .card-lbl{color:var(--yellow)}.card.danger .card-lbl{color:var(--red)}.card.ok .card-lbl{color:var(--green)}
+.card h3{font-size:14px;font-weight:600;color:#fff;margin-bottom:8px}
+.card p,.card li{font-size:13px;color:var(--text);line-height:1.65}
+.card ul{list-style:none;padding:0}
+.card ul li{padding:4px 0 4px 14px;position:relative}
+.card ul li::before{content:'>';position:absolute;left:0;color:var(--accent);font-weight:700}
+.email-sim{background:#1e1e2e;border:1px solid var(--border);padding:0;margin:12px 0;font-family:var(--mono);font-size:11px;overflow:hidden}
+.email-hdr{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--dim);line-height:1.8}
+.email-hdr strong{color:var(--text)}
+.email-hdr .suspicious{color:var(--red);background:rgba(255,71,87,.1);padding:1px 4px}
+.email-body{padding:14px;color:var(--text);line-height:1.7;font-family:var(--sans);font-size:12px}
+.email-body .phish-link{color:var(--accent);text-decoration:underline;cursor:default}
+.email-body .phish-note{display:block;margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:.05em}
+table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+th{text-align:left;font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--dim);padding:6px 10px;border-bottom:1px solid var(--border);text-transform:uppercase}
+td{padding:8px 10px;border-bottom:1px solid rgba(31,45,71,.5);color:var(--text);vertical-align:top;font-size:12px}
+tr:last-child td{border:none}
+.tag{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 5px;letter-spacing:.04em}
+.t-blue{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.3)}
+.t-red{background:rgba(255,71,87,.1);color:var(--red);border:1px solid rgba(255,71,87,.3)}
+.t-yel{background:rgba(255,211,42,.1);color:var(--yellow);border:1px solid rgba(255,211,42,.3)}
+.quiz-box{background:var(--surface);border:1px solid var(--border);padding:24px 20px;position:relative}
+.quiz-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.q-counter{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:12px}
+.q-text{font-size:15px;font-weight:600;color:#fff;line-height:1.5;margin-bottom:20px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;cursor:pointer;display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text);text-align:left;width:100%;transition:border-color .15s}
+.opt:hover{border-color:var(--accent);color:#fff}
+.opt.correct{border-color:var(--green);background:rgba(0,255,159,.05);color:var(--green)}
+.opt.wrong{border-color:var(--red);background:rgba(255,71,87,.05);color:var(--red)}
+.opt.off{cursor:default;pointer-events:none}
+.opt-letter{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);min-width:16px;padding-top:1px}
+.opt.correct .opt-letter{color:var(--green)}.opt.wrong .opt-letter{color:var(--red)}
+.feedback{margin-top:16px;padding:13px 14px;border-left:3px solid var(--green);font-size:13px;color:var(--text);line-height:1.6;display:none}
+.feedback.show{display:block}.feedback.bad{border-color:var(--red)}
+.feedback strong{color:#fff}
+.nav{display:flex;align-items:center;justify-content:space-between;margin-top:28px}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border)}
+.dot.active{background:var(--accent);box-shadow:0 0 5px var(--accent)}
+.dot.done{background:var(--green)}
+.btn{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:10px 20px;border:1px solid;cursor:pointer;background:transparent;transition:all .15s}
+.btn-p{border-color:var(--accent);color:var(--accent)}
+.btn-p:hover{background:var(--accent);color:var(--bg)}
+.btn-p:disabled{opacity:.3;cursor:default;pointer-events:none}
+.btn-g{border-color:var(--border);color:var(--dim)}
+.btn-g:hover{border-color:var(--dim);color:var(--text)}
+.done-wrap{text-align:center;padding:48px 0}
+.done-icon{font-size:44px;margin-bottom:16px}
+.done-wrap h2{font-size:24px;font-weight:700;color:#fff;margin-bottom:8px}
+.done-wrap p{font-size:13px;color:var(--dim);max-width:440px;margin:0 auto 24px;line-height:1.6}
+.score{font-family:var(--mono);font-size:44px;font-weight:600;text-shadow:0 0 24px rgba(0,255,159,.4);margin:16px 0 4px}
+.score.pass{color:var(--green)}
+.score.fail{color:var(--red);text-shadow:0 0 24px rgba(255,71,87,.4)}
+.cert{border:1px solid var(--border);background:var(--surface);padding:20px 24px;display:inline-block;text-align:left;margin-top:20px;max-width:440px;width:100%}
+.cert-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--accent);margin-bottom:12px;text-transform:uppercase}
+.cert-row{font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:4px}
+.cert-row span{color:var(--text)}
+.reg-box{background:var(--surface);border:1px solid var(--border);padding:32px 28px;max-width:420px;margin:0 auto}
+.reg-box label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+.reg-box input{width:100%;background:var(--surface2);border:1px solid var(--border);color:#fff;font-family:var(--sans);font-size:14px;padding:10px 12px;margin-bottom:20px;outline:none;transition:border-color .15s}
+.reg-box input:focus{border-color:var(--accent)}
+.reg-box input[readonly]{color:var(--dim);cursor:default}
+</style>
+</head>
+<body>
+<header>
+  <div class="badges">
+    <div class="badge badge-blue">IL5 / FEDRAMP HIGH</div>
+    <div class="badge badge-red">AT-2(3)(4)</div>
+    <div class="badge badge-yellow">FOR OFFICIAL USE ONLY</div>
+    <div class="hdr-title">Phishing Awareness &amp; Prevention</div>
+  </div>
+  <div class="prog-wrap">
+    <span class="prog-label" id="plbl">0/0</span>
+    <div class="prog-outer"><div class="prog-inner" id="pbar" style="width:0%"></div></div>
+  </div>
+</header>
+
+<div class="main" id="root"></div>
+
+<script>
+var FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSdHsEWs-iPTGncIBdIiFGaEnxl6MXMN6IHFnUVDGyG1Trf4fw/viewform';
+var FIELD_NAME='entry.1084561241',FIELD_DATE='entry.989191631',FIELD_COURSE='entry.1455054579',FIELD_SCORE='entry.766034301',FIELD_HASH='entry.1157983501';
+var COURSE_NAME='Phishing Awareness & Prevention Training (AT-2(3)(4))';
+
+var step=0,answers={},correct=0,userName='';
+
+var steps=[
+  {type:'reg'},
+  {type:'c',id:'intro'},
+  {type:'c',id:'anatomy'},
+  {type:'c',id:'beyond'},
+  {type:'c',id:'aftermath'},
+  {type:'c',id:'respond'},
+  {type:'q',id:0},
+  {type:'q',id:1},
+  {type:'q',id:2},
+  {type:'q',id:3},
+  {type:'q',id:4},
+  {type:'q',id:5},
+  {type:'q',id:6},
+  {type:'q',id:7},
+  {type:'q',id:8},
+  {type:'q',id:9},
+  {type:'done'}
+];
+
+var qs=[
+  {q:'You receive an email from "IT Security" asking you to click a link to "verify your account within 24 hours or it will be suspended." The sender address is security-alerts@company-helpdesk.net, but your actual company domain is @company.com. What should you do?',
+   opts:['Click the link quickly since you don\'t want your account suspended.','Forward it to your team to ask if they got the same email.','Do NOT click. The sender domain does not match your organization. Report it using the "Report Phishing" button or forward to the security mailbox, then delete it.','Reply to the sender asking if it is legitimate.'],
+   ans:2,
+   fb:'<strong>Correct.</strong> Three red flags: (1) the sender domain "company-helpdesk.net" does not match your real domain, (2) artificial urgency ("24 hours or suspension"), and (3) a generic call to action ("verify your account"). Never click, never reply (confirms your address is active), and never forward to coworkers (spreads the threat). Use the official reporting channel only.'},
+  {q:'You hover over a link in an email and the tooltip shows: https://login.rnicrosoftonline.com/auth. The email claims to be from Microsoft asking you to re-authenticate. What is wrong?',
+   opts:['Nothing -- it says "microsoft" so it must be legitimate.','The domain is "rnicrosoftonline.com" (rn instead of m) -- this is a lookalike/homoglyph domain designed to visually impersonate "microsoftonline.com." It is a phishing page.','The URL uses HTTPS so it must be safe.','Microsoft would never send login links by email.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> This is a <strong>homoglyph attack</strong>. The attacker replaced "m" with "rn" -- nearly identical in many fonts. This is one of the most effective phishing techniques because it passes casual visual inspection. Always carefully read the actual domain (the part before the first single slash). HTTPS only means the connection is encrypted -- it does NOT mean the site is legitimate. Attackers routinely use HTTPS on phishing sites.'},
+  {q:'Your CEO texts your personal phone: "Hey, I need you to buy 5 $200 Amazon gift cards for a client meeting. Don\'t tell anyone, it\'s a surprise. Send me the codes ASAP." What do you do?',
+   opts:['Buy the gift cards -- the CEO asked directly.','Text back asking for more details before purchasing.','Recognize this as a likely Business Email Compromise / executive impersonation scam. Do NOT purchase anything. Verify by contacting the CEO through an official channel (work email, office phone). Report the message to your security team.','Ignore the message but do not report it.'],
+   ans:2,
+   fb:'<strong>Correct.</strong> Classic BEC indicators: (1) unusual channel (personal phone, not work email), (2) urgency ("ASAP"), (3) secrecy ("don\'t tell anyone"), (4) financial request (gift cards -- untraceable). Real executives do not ask employees to secretly purchase gift cards. Always verify through a <strong>separate, known-good channel</strong>. Ignoring without reporting means the attacker tries the next person on the org chart.'},
+  {q:'An email arrives from a vendor you actually work with, using their real email domain. It contains a shared OneDrive link to "the updated contract." But you were not expecting any contract updates. What should you do?',
+   opts:['Open it -- the domain is correct so it must be safe.','Call or message the vendor contact through a known channel to verify they sent it before clicking anything. If they didn\'t, report it as a compromised-account phishing attempt.','Reply to the email asking if it is real.','Open it on your phone instead of your laptop for safety.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> This is the hardest type of phishing to detect: <strong>compromised-account phishing</strong>. The attacker has taken over the vendor\'s real email account, so the domain, display name, and even the email signature are legitimate. The ONLY reliable defense is out-of-band verification -- contact the sender through a different channel (phone, Teams, in-person). Never reply to the suspicious email itself. Opening on a phone offers zero additional protection.'},
+  {q:'You receive a calendar invite from an external contact you don\'t recognize. The invite body contains a link to "join the meeting." What is the risk?',
+   opts:['Calendar invites cannot contain phishing links.','Calendar invites can contain malicious links just like emails. If you don\'t recognize the sender or expect the meeting, decline it, do not click any links in the invite body, and report it to your security team.','Accept the invite to see what happens during the meeting time.','The calendar system automatically scans all links so it is safe to click.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> <strong>Calendar phishing</strong> is increasingly common because many people trust calendar invites more than emails. Attackers send invites with phishing links disguised as "Join Meeting" buttons. Some even auto-accept in certain calendar configurations. Treat unexpected calendar invites from unknown senders with the same suspicion as unexpected emails.'},
+  {q:'You scan a QR code posted on a flyer in your building\'s lobby. It takes you to a login page that looks exactly like your company\'s SSO portal. What should concern you?',
+   opts:['Nothing -- QR codes are safe because they are physical.','QR codes can point to any URL, including phishing pages. You cannot see the destination before scanning. Verify the URL in your browser\'s address bar carefully -- if the domain doesn\'t exactly match your SSO portal, close the tab immediately and report it.','The page looks correct so it must be legitimate.','You should enter your credentials but use a fake password first to test.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> <strong>Quishing</strong> (QR-code phishing) exploits the fact that humans cannot read QR codes visually -- you have no idea where the code points until you scan it. Attackers place malicious QR codes on physical flyers, posters, business cards, and even over legitimate QR codes. Always check the URL in your browser bar after scanning. "Testing" with a fake password still reveals to the attacker that someone engaged with the phishing page and may trigger secondary attacks.'},
+  {q:'You receive a phone call from someone who identifies themselves as "Microsoft Support." They say your computer has been flagged for a security issue and ask you to install a remote-access tool so they can fix it. They sound professional and reference your actual operating system version. What do you do?',
+   opts:['Follow their instructions -- they seem knowledgeable.','Ask them to verify their identity by giving you your password.','Hang up immediately. Microsoft does not make unsolicited support calls. Do NOT install any software. Report the call to your security team as a vishing attempt.','Stay on the line to waste their time so they can\'t call others.'],
+   ans:2,
+   fb:'<strong>Correct.</strong> This is <strong>vishing</strong> (voice phishing). Key facts: (1) Microsoft, Google, Apple, and your bank will NEVER cold-call you about security issues, (2) knowing your OS version is trivial (browser user-agent strings leak it), (3) remote-access tools give the attacker full control of your machine. Hang up. Do not engage, even to "waste their time" -- sophisticated attackers use that time to social-engineer more information from you.'},
+  {q:'After clicking a link in what turned out to be a phishing email, you entered your username and password on a fake login page. You realize it was phishing 30 seconds later. What is the CORRECT order of response?',
+   opts:['Delete the email and hope nobody notices.','Immediately change your password on the real site, enable/verify MFA, check recent sign-in activity for unauthorized access, report the incident to your ISSO/SOC, and scan your device for malware. Do not delete the original phishing email -- it is evidence.','Wait until your next scheduled password rotation to change credentials.','Only report it if you notice unauthorized activity on your account.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> The attacker now has your credentials. Speed matters -- they may attempt to use them within minutes. The sequence: (1) change your password IMMEDIATELY on the real site, (2) verify MFA is active and review for unauthorized MFA device registrations, (3) check sign-in logs for sessions you don\'t recognize, (4) report to ISSO/SOC so they can block the phishing domain and check if others were hit, (5) preserve the phishing email as evidence. Deleting the evidence makes investigation harder.'},
+  {q:'Which of the following is TRUE about HTTPS and phishing?',
+   opts:['If a website uses HTTPS (shows a padlock icon), it is safe and verified as legitimate.','HTTPS means the connection between your browser and the server is encrypted -- it does NOT mean the website is trustworthy. Attackers routinely obtain free TLS certificates for phishing domains. You must verify the domain name, not the padlock.','Only government websites can use HTTPS.','Phishing sites cannot obtain HTTPS certificates.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> This is one of the most persistent myths in cybersecurity. HTTPS encrypts data in transit -- it says nothing about who owns the site. Services like Let\'s Encrypt issue free TLS certificates to anyone, including attackers. Over <strong>80% of phishing sites now use HTTPS</strong>. The padlock means your connection is encrypted; it does NOT mean you are on a legitimate site. Always verify the <strong>domain name</strong>.'},
+  {q:'Your organization just completed a phishing simulation exercise. Several employees clicked the simulated phishing link. What is the PRIMARY purpose of these exercises?',
+   opts:['To punish employees who fail.','To identify and train vulnerable users, measure organizational phishing resilience, establish baseline metrics for improvement, satisfy AT-2(3) social engineering training requirements, and drive investment in technical controls like email filtering and MFA.','To test whether the email system is working.','To see if the IT security team is doing their job.'],
+   ans:1,
+   fb:'<strong>Correct.</strong> Phishing simulations are a <strong>training and measurement tool, not a punishment mechanism</strong>. They identify who needs additional training, establish click-rate baselines (industry average: 10-15%), measure improvement over time, and help justify investments in technical controls (email gateways, link sandboxing, phishing-resistant MFA). Organizations that shame employees for failing see DECREASED reporting rates -- the opposite of what you want. The goal is a culture where people report freely.'}
+];
+
+function dots(){return steps.filter(function(s){return s.type!=='done'&&s.type!=='reg';}).map(function(s,i){var c='dot';var idx=i+1;if(idx<step)c+=' done';else if(idx===step)c+=' active';return '<div class="'+c+'"></div>';}).join('');}
+function nextStep(){if(step<steps.length-1){step++;render();window.scrollTo(0,0);}}
+function updateProg(){var total=steps.filter(function(s){return s.type!=='done'&&s.type!=='reg';}).length;var cur=Math.max(0,step-1);var pct=Math.round((cur/total)*100);document.getElementById('pbar').style.width=pct+'%';document.getElementById('plbl').textContent=cur+'/'+total;}
+function answerQ(qi,chosen){if(answers[qi]!==undefined)return;answers[qi]=chosen;if(chosen===qs[qi].ans)correct++;render();}
+function card(type,label,heading,bodyOrItems){var cls='card'+(type==='warn'?' warn':type==='danger'?' danger':type==='ok'?' ok':'');var body='';if(typeof bodyOrItems==='string'){body='<p>'+bodyOrItems+'</p>';}else{body='<ul>'+bodyOrItems.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>';}return '<div class="'+cls+'"><div class="card-lbl">'+label+'</div><h3>'+heading+'</h3>'+body+'</div>';}
+function genHash(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h)+s.charCodeAt(i);return'XAI-PHI-'+('000000'+Math.abs(h).toString(16).toUpperCase()).slice(-6)}
+function submitCompletion(hash,pct,ds){window.open(FORM_URL+'?usp=pp_url&'+FIELD_NAME+'='+encodeURIComponent(userName)+'&'+FIELD_DATE+'='+encodeURIComponent(ds)+'&'+FIELD_COURSE+'='+encodeURIComponent(COURSE_NAME)+'&'+FIELD_SCORE+'='+encodeURIComponent(pct+'%')+'&'+FIELD_HASH+'='+encodeURIComponent(hash),'_blank')}
+
+function renderReg(){
+  var ds=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  return '<div class="sec-num">REGISTRATION</div>'+
+    '<div class="sec-title">Phishing Awareness &amp; Prevention Training</div>'+
+    '<div class="sec-desc">AT-2(3) Social Engineering / AT-2(4) Suspicious Communications | Estimated Duration: 35 Minutes | 80% passing score required | 10 scenario-based questions</div>'+
+    '<div class="reg-box">'+
+    '<label>Full Name</label>'+
+    '<input type="text" id="regName" placeholder="e.g. Jane Doe" value="'+userName+'" autocomplete="name"/>'+
+    '<label>Date</label>'+
+    '<input type="text" value="'+ds+'" readonly/>'+
+    '<button class="btn btn-p" style="width:100%" onclick="startTraining()">Begin Training --></button>'+
+    '</div>';
+}
+
+function startTraining(){var n=document.getElementById('regName').value.trim();if(!n){document.getElementById('regName').style.borderColor='var(--red)';return;}userName=n;nextStep();}
+
+function emailSim(from,to,subject,body,notes){
+  var h='<div class="email-sim"><div class="email-hdr">';
+  h+='<strong>From:</strong> '+from+'<br/>';
+  h+='<strong>To:</strong> '+to+'<br/>';
+  h+='<strong>Subject:</strong> '+subject;
+  h+='</div><div class="email-body">'+body;
+  if(notes)h+='<span class="phish-note">'+notes+'</span>';
+  h+='</div></div>';
+  return h;
+}
+
+function renderContent(id){
+  var html='';
+  if(id==='intro'){
+    html+='<div class="sec-num">01 -- WHY PHISHING WORKS</div>';
+    html+='<div class="sec-title">You Are the Target</div>';
+    html+='<div class="sec-desc">Phishing is the #1 initial access vector for cyber attacks against organizations. It works because it targets human behavior, not technology. This training will sharpen your ability to recognize and report phishing attempts.</div>';
+
+    html+=card('danger','The Numbers','Why This Training Matters',[
+      '91% of all cyber attacks begin with a phishing email (Verizon DBIR)',
+      'The average phishing simulation click rate across organizations is 10-15%',
+      'Median time for a user to click a phishing link: 21 seconds after opening the email',
+      'Credential phishing (fake login pages) accounts for 67% of all phishing attacks',
+      'Business Email Compromise (BEC) losses exceeded $2.9 billion in the US in 2023 (FBI IC3)',
+      'A single successful phish can lead to full organizational compromise within hours']);
+
+    html+=card('','The Psychology','Why Smart People Click',[
+      'Authority -- the email appears to come from a boss, CEO, or IT department',
+      'Urgency -- "Act now or your account will be suspended in 24 hours"',
+      'Fear -- "Unauthorized login detected on your account"',
+      'Curiosity -- "You have a new voicemail" or "Your package delivery failed"',
+      'Helpfulness -- "Please review the attached invoice" from a known vendor',
+      'Habit -- you click links in emails dozens of times a day; attackers exploit that autopilot']);
+
+    html+=card('warn','What Attackers Want','Goals of a Phishing Attack',[
+      'Your credentials -- username and password to access organizational systems',
+      'Your MFA token -- AiTM (adversary-in-the-middle) proxies capture your MFA in real time',
+      'Malware installation -- attachments or links that download ransomware, keyloggers, or RATs',
+      'Financial fraud -- wire transfers, gift cards, invoice manipulation',
+      'Initial foothold -- one compromised account is the starting point for lateral movement across the entire organization']);
+
+  } else if(id==='anatomy'){
+    html+='<div class="sec-num">02 -- ANATOMY OF A PHISHING EMAIL</div>';
+    html+='<div class="sec-title">What to Check Before You Click</div>';
+    html+='<div class="sec-desc">Every phishing email has detectable indicators. Train yourself to check these BEFORE you click any link, open any attachment, or take any action.</div>';
+
+    html+=card('danger','The 5-Second Check','Do This for Every Unexpected Email',[
+      '1. SENDER -- Expand the "From" field. Does the actual email address match the display name? Does the domain match the real organization?',
+      '2. DOMAIN -- Read the domain character by character. Watch for rn vs m, 0 vs O, l vs I, and extra subdomains (login.microsoft.com.evil.com)',
+      '3. URGENCY -- Is the email pressuring you to act immediately? Legitimate organizations give you time.',
+      '4. LINKS -- Hover (don\'t click!) to preview the URL. Does the destination domain match the claimed sender?',
+      '5. ASK -- Were you expecting this? If not, verify through a separate channel before engaging.']);
+
+    html+='<div class="card danger"><div class="card-lbl">Example -- Credential Phishing</div><h3>Spot the Red Flags</h3>';
+    html+=emailSim(
+      'IT Security &lt;<span class="suspicious">no-reply@company-secure-portal.net</span>&gt;',
+      'you@company.com',
+      '<span class="suspicious">URGENT:</span> Password Expiration Notice - Action Required',
+      'Your password will expire in <strong>24 hours</strong>. To avoid losing access to all company systems, please verify your credentials immediately by clicking the link below:<br/><br/><span class="phish-link">https://company-secure-<span class="suspicious">portal.net</span>/verify-account</span><br/><br/>If you do not verify within 24 hours, your account will be permanently locked.<br/><br/>Thank you,<br/>IT Security Team',
+      'RED FLAGS: Wrong domain (company-secure-portal.net vs company.com) | Urgency + threat ("permanently locked") | Generic greeting | Link domain does not match organization'
+    );
+    html+='</div>';
+
+    html+=card('warn','Common Phishing Domain Tricks','What Attackers Do to Fool You',[
+      'Lookalike/homoglyph: rnicrosoftonline.com (rn = m visually)',
+      'Subdomain abuse: login.microsoft.com.attacker.com (your eye reads "microsoft.com" but the real domain is attacker.com)',
+      'Typosquatting: microsofr.com, microsooft.com, micros0ft.com',
+      'TLD swaps: company.co instead of company.com, company.net instead of company.org',
+      'Extra words: company-support.com, company-helpdesk.com, company-security.com',
+      'Punycode/IDN: xn--microsft-d1a.com (uses a Unicode character that looks like "o")']);
+
+    html+=card('ok','Attachment Red Flags','Dangerous File Types',[
+      'ZIP, RAR, 7z archives (especially password-protected -- evades email scanning)',
+      'ISO, IMG disk image files (bypass Mark-of-the-Web in Windows)',
+      'HTM, HTML files (open directly in browser to harvest credentials locally)',
+      'LNK shortcut files (execute arbitrary commands when opened)',
+      'OneNote (.one) files with embedded scripts (recent attack trend)',
+      'Office documents with macros (.docm, .xlsm) -- macros are almost never needed for legitimate documents',
+      'PDF files with embedded JavaScript or links to credential-harvesting pages']);
+
+  } else if(id==='beyond'){
+    html+='<div class="sec-num">03 -- BEYOND EMAIL</div>';
+    html+='<div class="sec-title">Phishing Is Not Just Email</div>';
+    html+='<div class="sec-desc">Attackers use every communication channel available. You must apply the same skepticism to all unsolicited messages, not just email.</div>';
+
+    html+=card('','Vishing','Voice Phishing via Phone Calls',[
+      'Caller impersonates IT support, HR, a bank, or a government agency',
+      'Uses caller-ID spoofing to display a legitimate-looking number',
+      'References real details about you (name, department, OS) to build credibility',
+      'Asks you to install remote-access software, provide credentials, or read MFA codes aloud',
+      'Defense: Hang up. Call back using a verified number from the company directory. Never give credentials or MFA codes over the phone.']);
+
+    html+=card('warn','Smishing','SMS / Text Message Phishing',[
+      'Text messages with shortened URLs (bit.ly, t.co) hiding the real destination',
+      'Common lures: "Your package delivery failed," "Suspicious login on your account," "You\'ve won a prize"',
+      'May impersonate your bank, carrier, or employer',
+      'Increasingly uses iMessage or RCS to bypass SMS filtering',
+      'Defense: Do not click links in unsolicited texts. Go directly to the official website or app instead.']);
+
+    html+=card('danger','Quishing','QR Code Phishing',[
+      'Malicious QR codes placed on flyers, posters, parking meters, restaurant menus, or overlaid on legitimate QR codes',
+      'You cannot see the URL before scanning -- QR codes are machine-readable only',
+      'Often leads to credential-harvesting pages that mimic SSO or MFA portals',
+      'Has appeared in phishing emails as well (bypasses link-scanning tools)',
+      'Defense: Check the URL in your browser bar after scanning. If the domain looks unfamiliar, close the tab immediately.']);
+
+    html+=card('ok','OAuth Consent Phishing','The Invisible Phish',[
+      'Attacker sends a legitimate-looking OAuth consent prompt (e.g., "App X wants to access your email")',
+      'You click "Approve" thinking it\'s a normal business app',
+      'The attacker\'s app now has persistent access to your mailbox, contacts, or files -- no password needed',
+      'Survives password changes because the OAuth token is separate from your password',
+      'Defense: Never approve OAuth consent prompts you did not expect. Report unfamiliar app consent requests to your ISSO. Review your authorized apps regularly in your account settings.']);
+
+    html+=card('','MFA Fatigue / Push Bombing','When MFA Is the Attack Vector',[
+      'Attacker has your password (from a prior breach or phishing) and repeatedly triggers MFA prompts',
+      'You receive 20+ MFA push notifications at 3 AM until you tap "Approve" to make it stop',
+      'One accidental approval gives the attacker full access',
+      'Defense: NEVER approve an MFA prompt you did not initiate. Deny it and immediately change your password. Report it to your security team. Use number-matching MFA or FIDO2 keys (immune to this attack).']);
+
+  } else if(id==='aftermath'){
+    html+='<div class="sec-num">04 -- WHAT HAPPENS AFTER YOU CLICK</div>';
+    html+='<div class="sec-title">The Attack Chain After a Successful Phish</div>';
+    html+='<div class="sec-desc">Understanding what happens after a click helps you understand why speed of reporting matters. Every minute counts.</div>';
+
+    html+=card('danger','The Timeline','What Happens in the First Hour',[
+      'T+0 seconds: You enter your credentials on the phishing page',
+      'T+5 seconds: Attacker receives your username, password, and intercepted MFA token in real time',
+      'T+30 seconds: Attacker logs in to your real account using captured session token',
+      'T+2 minutes: Attacker creates inbox rules to hide security alerts and sets up email forwarding',
+      'T+5 minutes: Attacker registers new MFA devices on your account to maintain persistence',
+      'T+10 minutes: Attacker searches your mailbox for sensitive data, org charts, financial info',
+      'T+15 minutes: Attacker sends phishing emails FROM YOUR ACCOUNT to your contacts (now trusted)',
+      'T+30 minutes: Attacker accesses connected apps (SharePoint, OneDrive, Teams) via OAuth tokens',
+      'T+60 minutes: Attacker moves laterally -- using your access to reach higher-privilege targets']);
+
+    html+=card('warn','Why It Escalates','One Phish Can Compromise the Entire Org',[
+      'Your contacts trust emails from you -- internal phishing has a 50%+ click rate',
+      'Your account may have access to sensitive systems, CUI, or administrative functions',
+      'Attackers use inbox rules to hide evidence -- you may not realize you\'re compromised for days',
+      'Shared files, Teams channels, and distribution lists amplify the blast radius',
+      'If the attacker reaches an admin account, they can modify security policies, disable MFA, and access everything']);
+
+    html+=card('ok','Why Reporting Speed Matters','Minutes Save Millions',[
+      'The SOC can disable the compromised account before the attacker completes lateral movement',
+      'They can block the phishing domain for the entire organization',
+      'They can identify and warn other employees who received the same phishing email',
+      'They can check for inbox rules, MFA device changes, and OAuth grants the attacker created',
+      'The difference between a contained incident and a full breach is often measured in minutes, not hours']);
+
+  } else if(id==='respond'){
+    html+='<div class="sec-num">05 -- HOW TO REPORT &amp; RESPOND</div>';
+    html+='<div class="sec-title">Your Response Checklist</div>';
+    html+='<div class="sec-desc">Knowing what to do and doing it quickly is the difference between a near-miss and a breach.</div>';
+
+    html+=card('','If You Receive a Suspicious Email','And Have NOT Clicked',[
+      'Do NOT click any links or open any attachments',
+      'Do NOT reply to the sender (confirms your address is active)',
+      'Do NOT forward to coworkers to "ask if it looks real" (spreads the phishing email)',
+      'Use the "Report Phishing" button in your email client, or forward to the security mailbox',
+      'Delete the email after reporting']);
+
+    html+=card('danger','If You Clicked a Link or Entered Credentials','Act Immediately',[
+      '1. Change your password IMMEDIATELY on the real site (not through the phishing link)',
+      '2. Check your MFA settings -- remove any devices you don\'t recognize',
+      '3. Review recent sign-in activity for unfamiliar sessions, locations, or devices',
+      '4. Report to your ISSO / SOC IMMEDIATELY -- this is a security incident',
+      '5. Do NOT delete the phishing email -- the SOC needs it as evidence',
+      '6. Scan your device for malware if you downloaded an attachment',
+      '7. Monitor your accounts for unusual activity in the following days']);
+
+    html+=card('ok','If You Receive a Suspicious Phone Call or Text','Vishing / Smishing Response',[
+      'Hang up or do not respond to the text',
+      'Do NOT provide credentials, MFA codes, personal information, or install software',
+      'Verify by calling the claimed organization through a known, official number',
+      'Report the attempt to your security team -- vishing campaigns target multiple employees',
+      'Save the caller ID or screenshot the text message as evidence']);
+
+    html+=card('warn','The Golden Rule','When in Doubt, Report',
+      'You are NOT expected to determine whether something is a real attack. That is the SOC\'s job. Your job is to report anything suspicious, quickly, without judgment. False positives are free. Missed phishing emails are not. Organizations with high reporting rates and low click rates have one thing in common: a no-blame culture that rewards reporting.');
+  }
+
+  html+='<div class="nav"><div class="dots">'+dots()+'</div><button class="btn btn-p" onclick="nextStep()">'+(id==='respond'?'Start Quiz -->':'Continue -->')+'</button></div>';
+  return html;
+}
+
+function renderQuiz(qi){
+  var q=qs[qi];var answered=answers[qi]!==undefined;var html='';
+  html+='<div class="sec-num">KNOWLEDGE CHECK</div><div class="sec-title">Quiz</div><div class="quiz-box">';
+  html+='<div class="q-counter">QUESTION '+(qi+1)+' / '+qs.length+'</div>';
+  html+='<div class="q-text">'+q.q+'</div><div class="options">';
+  var letters=['A','B','C','D'];
+  q.opts.forEach(function(o,i){var cls='opt';if(answered){cls+=' off';if(i===q.ans)cls+=' correct';else if(i===answers[qi])cls+=' wrong';}html+='<button class="'+cls+'" onclick="answerQ('+qi+','+i+')"><span class="opt-letter">'+letters[i]+'</span><span>'+o+'</span></button>';});
+  html+='</div>';
+  var isCorrect=answered&&answers[qi]===q.ans;
+  html+='<div class="feedback'+(answered?' show':'')+(answered&&!isCorrect?' bad':'')+'">'+(answered?(isCorrect?'+ ':'x ')+q.fb:'')+'</div></div>';
+  var isLast=qi===qs.length-1;
+  html+='<div class="nav"><div class="dots">'+dots()+'</div><button class="btn btn-p" '+(answered?'':'disabled')+' onclick="nextStep()">'+(isLast?'Finish -->':'Next -->')+'</button></div>';
+  return html;
+}
+
+function renderDone(){
+  var pct=Math.round((correct/qs.length)*100);
+  var passed=pct>=80;
+  var ds=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var html='<div class="done-wrap">';
+  var hash='';
+  if(passed){
+    hash=genHash(userName+ds+pct+correct);
+    html+='<div class="done-icon">&#x1f6e1;</div><h2>Congratulations, '+userName+'!</h2>';
+    html+='<p>You have successfully completed Phishing Awareness &amp; Prevention Training (AT-2(3)/(4)) for IL5 / FedRAMP High environments.</p>';
+  } else {
+    html+='<div class="done-icon">&#x1f4cb;</div><h2>Review Recommended</h2>';
+    html+='<p>'+userName+', you scored below the 80% passing threshold. Review the content sections and retake the quiz when ready.</p>';
+  }
+  html+='<div class="score '+(passed?'pass':'fail')+'">'+pct+'%</div>';
+  html+='<p style="font-family:var(--mono);font-size:11px;color:var(--dim)">'+correct+' / '+qs.length+' CORRECT</p>';
+  if(passed){
+    html+='<div class="cert"><div class="cert-lbl">Training Completion Record</div>';
+    html+='<div class="cert-row">Name: <span>'+userName+'</span></div>';
+    html+='<div class="cert-row">Course: <span>Phishing Awareness &amp; Prevention</span></div>';
+    html+='<div class="cert-row">Framework: <span>IL5 / FedRAMP High / NIST 800-53r5</span></div>';
+    html+='<div class="cert-row">Controls: <span>AT-2(3), AT-2(4)</span></div>';
+    html+='<div class="cert-row">Score: <span>'+pct+'% ('+correct+'/'+qs.length+')</span></div>';
+    html+='<div class="cert-row">Completion Date: <span>'+ds+'</span></div>';
+    html+='<div class="cert-row">Completion ID: <span style="color:var(--accent);letter-spacing:.08em">'+hash+'</span></div>';
+    html+='<div class="cert-row">Topics: <span>Email Phishing, BEC, Vishing, Smishing, Quishing, OAuth Consent, MFA Fatigue, Incident Response</span></div>';
+    html+='</div>';
+    html+='<br/><button class="btn btn-p" onclick="submitCompletion(\''+hash+'\','+pct+',\''+ds+'\')">Submit Completion Record</button>&nbsp;&nbsp;';
+  }
+  html+='<br/><br/><button class="btn '+(passed?'btn-g':'btn-p')+'" onclick="restart()">Retake</button>';
+  html+='</div>';
+  return html;
+}
+
+function render(){var s=steps[step];var html='';if(s.type==='reg')html=renderReg();else if(s.type==='c')html=renderContent(s.id);else if(s.type==='q')html=renderQuiz(s.id);else html=renderDone();document.getElementById('root').innerHTML=html;updateProg();}
+function restart(){step=0;answers={};correct=0;userName='';render();window.scrollTo(0,0);}
+render();
+</script>
+</body>
+</html>
